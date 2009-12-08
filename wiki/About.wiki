@@ -2,7 +2,7 @@
 
 = Introduction =
 
-*bold* RunningCat *bold* is a testing system to test students programming skills. The testing system consists of the next parts:
+*RunningCat* is a testing system to test students programming skills. The testing system consists of the next parts:
   * testing server (Java);
   * data base (mysql);
   * web interface (LMS Moodle and module for it).
