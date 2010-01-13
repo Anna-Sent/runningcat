@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<platform os="Linux">
+		<paths
+			tmp="/tmp"
+			tests="workDir/tests"
+			extension=""
+			program_run="&lt;bin&gt;"
+		></paths>
+		<compiler
+			lang="Pascal/Object Pascal (Delphi)"
+			id="1"
+			cmd="fpc,-Mdelphi,&lt;src&gt;"
+			outputFD="1"
+			ext=".pas"
+		></compiler>
+		<compiler
+			lang="C/C++"
+			id="0"
+			cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
+			outputFD="2"
+			ext=".cpp"
+		></compiler>
+	</platform>
+	<platform os="Windows XP">
+		<paths
+			tmp="workDir/tmp"
+			tests="workDir/tests"
+			extension=".exe"
+			program_run="&lt;bin&gt;"
+		></paths>
+		<compiler
+			lang="Pascal/Object Pascal (Delphi)"
+			id="1"
+			cmd="fpc,-Ciort,-Mdelphi,&lt;src&gt;"
+			outputFD="1"
+			ext=".pas"
+		></compiler>
+		<compiler
+			lang="C/C++"
+			id="0"
+			cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
+			outputFD="2"
+			ext=".cpp"
+		></compiler>
+	</platform>
+</config>
