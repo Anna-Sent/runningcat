@@ -54,7 +54,7 @@ public class Compiler {
     }
     //public abstract String srcFileSuffix();
     private InputStream getCompileInput(ProcessExecutor e) throws ProcessNotRunningException {
-        switch (Configuration.getOutputFD(lang)) {
+        switch (Configuration.getOutputFileDescriptor(lang)) {
             case 2: return e.getErrorStream();
             case 1: return e.getInputStream();
             default: return null;

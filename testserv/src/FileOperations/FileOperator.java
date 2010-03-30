@@ -20,13 +20,29 @@ import java.io.Writer;
  * @author partizanka
  */
 public class FileOperator {
-    public static String createTempFile(
+    private static String createTempFile(
             String prefix, String suffix, String directoryPath)
             throws CanNotCreateTemporaryFileException {
         String path = "";
         File temp = null;
         try {
             temp = File.createTempFile(prefix, suffix, new File(directoryPath));
+            path = temp.getAbsolutePath();
+        } catch (IOException ex) {
+            throw new CanNotCreateTemporaryFileException(
+                    "Cannot create temporary file in directory \""+directoryPath
+                    +"\"");
+        }
+        return path;
+    }
+    public static String createFile(
+            String prefix, String suffix, String directoryPath)
+            throws CanNotCreateTemporaryFileException {
+        String path = "";
+        File temp = null;
+        try {
+            temp = new File(directoryPath+"/"+prefix+suffix);
+            temp.createNewFile();
             path = temp.getAbsolutePath();
         } catch (IOException ex) {
             throw new CanNotCreateTemporaryFileException(

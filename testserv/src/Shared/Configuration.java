@@ -17,9 +17,12 @@ import org.xml.sax.SAXException;
 class Compiler {
     String lang;
     int id;
-    String cmd;
-    int FD;
-    String ext;
+    int output_file_descriptor;
+    String src_prefix;
+    String src_suffix;
+    String bin_suffix;
+    String compile_cmd;
+    String execute_cmd;
 
     public Compiler(Node n) {
         if (!n.getNodeName().equals("compiler"))
@@ -31,19 +34,29 @@ class Compiler {
                 lang = attr.getNodeValue();
             else if (attr.getNodeName().equals("id"))
                 id = Integer.parseInt(attr.getNodeValue());
-            else if (attr.getNodeName().equals("cmd"))
-                cmd = attr.getNodeValue();
-            else if (attr.getNodeName().equals("outputFD"))
-                FD = Integer.parseInt(attr.getNodeValue());
-            else if (attr.getNodeName().equals("ext")) {
-                ext = attr.getNodeValue();
-                //if (ext == null) ext = "";
-            }
+            else if (attr.getNodeName().equals("output_file_descriptor"))
+                output_file_descriptor = Integer.parseInt(attr.getNodeValue());
+            else if (attr.getNodeName().equals("src_prefix"))
+                src_prefix = attr.getNodeValue();
+            else if (attr.getNodeName().equals("src_suffix"))
+                src_suffix = attr.getNodeValue();
+            else if (attr.getNodeName().equals("bin_suffix"))
+                bin_suffix = attr.getNodeValue();
+            else if (attr.getNodeName().equals("compile_cmd"))
+                compile_cmd = attr.getNodeValue();
+            else if (attr.getNodeName().equals("execute_cmd"))
+                execute_cmd = attr.getNodeValue();
         }
     }
     @Override
     public String toString() {
-        return id + ": " + lang + " ; " + FD + " ; " + cmd;
+        return id + ": " + lang + "; "
+                + output_file_descriptor + "; "
+                + src_prefix + "; "
+                + src_suffix + "; "
+                + bin_suffix + "; "
+                + compile_cmd + "; "
+                + execute_cmd;
     }
 }
 
@@ -51,8 +64,8 @@ class Platform {
     HashMap<Integer, Compiler> compilers;
     String tests;
     String tmp;
-    String extension;
-    String program_run;
+//    String extension;
+//    String program_run;
     String os;
 
     public Platform(Node n) {
@@ -78,11 +91,10 @@ class Platform {
                         tmp = attr.getNodeValue();
                     else if (attr.getNodeName().equals("tests"))
                         tests = attr.getNodeValue();
-                    else if (attr.getNodeName().equals("extension")) {
-                        extension = attr.getNodeValue();
-                        //if (extension == null) extension = "";
-                    } else if (attr.getNodeName().equals("program_run"))
-                        program_run = attr.getNodeValue();
+//                    else if (attr.getNodeName().equals("extension"))
+  //                      extension = attr.getNodeValue();
+   //                 else if (attr.getNodeName().equals("program_run"))
+     //                   program_run = attr.getNodeValue();
                 }
             }
             if (children.item(i).getNodeName().equals("compiler")) {
@@ -92,9 +104,10 @@ class Platform {
         }
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("tmp: " + tmp + "; tests: " + tests
-            + "; extension: " + extension + "; program_run: " + program_run + "\n");
+            + /*"; extension: " + extension + "; program_run: " + program_run + */"\n");
         for (int i=0; i<compilers.size(); ++i)
             sb.append("\t" + compilers.get(new Integer(i)).toString() + "\n");
         return sb.toString();
@@ -191,28 +204,32 @@ public class Configuration {
         return platforms.get(osname).tmp;
     }
 
-    public static String[] getProgramCommand() {
-        return platforms.get(osname).program_run.split(",");
-    }
-
     public static String[] getCompilerCommand(int lang) {
-        return platforms.get(osname).compilers.get(new Integer(lang)).cmd.split(",");
+        return platforms.get(osname).compilers.get(new Integer(lang)).compile_cmd.split(",");
     }
 
-    public static String getExtension() {
-        return platforms.get(osname).extension;
+    public static String[] getExecuteCommand(int lang) {
+        return platforms.get(osname).compilers.get(new Integer(lang)).execute_cmd.split(",");
     }
 
-    public static String getSuffix(int lang) {
-        return platforms.get(osname).compilers.get(new Integer(lang)).ext;
+    public static String getBinarySuffix(int lang) {
+        return platforms.get(osname).compilers.get(new Integer(lang)).bin_suffix;
+    }
+
+    public static String getSourceSuffix(int lang) {
+        return platforms.get(osname).compilers.get(new Integer(lang)).src_suffix;
+    }
+
+    public static String getSourcePrefix(int lang) {
+        return platforms.get(osname).compilers.get(new Integer(lang)).src_prefix;
     }
 
     public static Integer[] getLangs() {
         return platforms.get(osname).compilers.keySet().toArray(new Integer[0]);
     }
 
-    public static int getOutputFD(int lang) {
-        return platforms.get(osname).compilers.get(new Integer(lang)).FD;
+    public static int getOutputFileDescriptor(int lang) {
+        return platforms.get(osname).compilers.get(new Integer(lang)).output_file_descriptor;
     }
 
     public static void main(String[] args) {

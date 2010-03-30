@@ -79,7 +79,7 @@ public class ProgramTester {
         BufferedReader testInputReader = null; // reads from test file
         BufferedReader outputReader = null; // reads program's output
         BufferedReader testOutputReader = null; // read a correct test output
-        ProcessExecutor executor = new ProcessExecutor(program.getCmd(), null, 3000);
+        ProcessExecutor executor = new ProcessExecutor(program.getCmd(), program.getDirPath(), 3000);
         try {
             executor.execute();
             inputWriter = new BufferedWriter(new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException

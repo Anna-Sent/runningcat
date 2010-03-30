@@ -24,8 +24,8 @@ public class Program {
     }
     public void prepare() throws CanNotCreateTemporaryDirectoryException, CanNotCreateTemporaryFileException, CanNotWriteFileException {
         dirPath = FileOperator.createDirectory("tmpdir", "solution", Configuration.getTmpDir());
-        srcPath = FileOperator.createTempFile("test", Configuration.getSuffix(lang), dirPath);
-        binPath = srcPath.replace(Configuration.getSuffix(lang), Configuration.getExtension());
+        srcPath = FileOperator.createFile(Configuration.getSourcePrefix(lang), Configuration.getSourceSuffix(lang), dirPath);
+        binPath = srcPath.replace(Configuration.getSourceSuffix(lang), Configuration.getBinarySuffix(lang));
         FileOperator.writeFile(srcPath, text);
     }
     public void close() {
@@ -38,11 +38,13 @@ public class Program {
         return executable.exists() /*&& executable.canExecute()*/;
     }
     public String[] getCmd() {
-        String[] cmd = Configuration.getProgramCommand();
+        String[] cmd = Configuration.getExecuteCommand(lang);
         if (cmd!=null)
             for (int i=0;i<cmd.length;++i) {
-                cmd[i] = cmd[i].replace("<bin>", getBinPath());
+                cmd[i] = cmd[i].replace("<bin>", getBinFileName());// getBinPath());
             }
+        cmd[cmd.length-1] = cmd[cmd.length-1].replace(".class", "");
+        for(int i=0;i<cmd.length;++i) System.err.println(cmd[i]);
         return cmd;
     }
     public String getBinPath() {
