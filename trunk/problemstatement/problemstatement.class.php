@@ -1,6 +1,7 @@
 <?php
 require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->geshi);
+error_reporting(E_ALL);
 //<script src="jquery-1.3.2.min.js" type="text/javascript">
 
 /*function get_languages_for_geshi() {
@@ -511,10 +512,12 @@ window.onload=add_onchange;
 	$update->processed		= 0;
 	$update->succeeded		= 0;
 	$update->submissioncomment	= '';
+	$update->errormessage='';
         /*if (!update_record('problemstatement_submissions', $update)) {
             return false;
         }*/
         if (!insert_record('problemstatement_submissions', $update)) {
+			print ('<br>'.mysql_error());
             return false;
         }
         $submission = $this->get_submission($USER->id);
