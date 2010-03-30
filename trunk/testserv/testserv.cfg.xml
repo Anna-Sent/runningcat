@@ -4,44 +4,62 @@
 		<paths
 			tmp="/tmp"
 			tests="workDir/tests"
-			extension=""
-			program_run="&lt;bin&gt;"
 		></paths>
 		<compiler
 			lang="Pascal/Object Pascal (Delphi)"
 			id="1"
-			cmd="fpc,-Mdelphi,&lt;src&gt;"
-			outputFD="1"
-			ext=".pas"
+			output_file_descriptor="1"
+			src_prefix="temp"
+			src_suffix=".pas"
+			bin_suffix=""
+			compile_cmd="fpc,-Mdelphi,&lt;src&gt;"
+			execute_cmd="&lt;bin&gt;"
 		></compiler>
 		<compiler
 			lang="C/C++"
 			id="0"
-			cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
-			outputFD="2"
-			ext=".cpp"
+			output_file_descrip7tor="2"
+			src_prefix="temp"
+			src_suffix=".cpp"
+			bin_suffix=""
+			compile_cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
+			execute_cmd="&lt;bin&gt;"
 		></compiler>
 	</platform>
 	<platform os="Windows XP">
 		<paths
 			tmp="workDir/tmp"
 			tests="workDir/tests"
-			extension=".exe"
-			program_run="&lt;bin&gt;"
 		></paths>
 		<compiler
-			lang="Pascal/Object Pascal (Delphi)"
+			lang="Pascal/Delphi"
 			id="1"
-			cmd="fpc,-Ciort,-Mdelphi,&lt;src&gt;"
-			outputFD="1"
-			ext=".pas"
+			output_file_descriptor="1"
+			src_prefix="temp"
+			src_suffix=".pas"
+			bin_suffix=".exe"
+			compile_cmd="fpc,-Ciort,-Mdelphi,&lt;src&gt;"
+			execute_cmd="&lt;bin&gt;"
 		></compiler>
 		<compiler
 			lang="C/C++"
 			id="0"
-			cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
-			outputFD="2"
-			ext=".cpp"
+			output_file_descriptor="2"
+			src_prefix="temp"
+			src_suffix=".cpp"
+			bin_suffix=".exe"
+			compile_cmd="g++,-o,&lt;bin&gt;,&lt;src&gt;"
+			execute_cmd="&lt;bin&gt;"
+		></compiler>
+		<compiler
+			lang="Java"
+			id="2"
+			output_file_descriptor="2"
+			src_prefix="Main"
+			src_suffix=".java"
+			bin_suffix=".class"
+			compile_cmd="javac,&lt;src&gt;"
+			execute_cmd="java,&lt;bin&gt;"
 		></compiler>
 	</platform>
 </config>
