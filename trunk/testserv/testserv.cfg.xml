@@ -11,7 +11,7 @@ Constants: src_path, src_file, bin_path, bin_file, src_prefix.
 			tests="workDir/tests"
 		></pathes>
 		<compiler
-			lang="Pascal/Object Pascal (Delphi)"
+			lang="Pascal/Delphi"
 			id="1"
 			output_file_descriptor="1"
 			src_prefix="temp"
@@ -23,13 +23,31 @@ Constants: src_path, src_file, bin_path, bin_file, src_prefix.
 		<compiler
 			lang="C/C++"
 			id="0"
-			output_file_descrip7tor="2"
+			output_file_descriptor="2"
 			src_prefix="temp"
 			src_suffix=".cpp"
 			bin_suffix=""
 			compile_cmd="g++,-o,&lt;bin_file&gt;,&lt;src_file&gt;"
 			execute_cmd="&lt;bin_path&gt;"
 		></compiler>
+		<compiler
+			lang="Java"
+			id="2"
+			output_file_descriptor="2"
+			src_prefix="Main"
+			src_suffix=".java"
+			bin_suffix=".class"
+			compile_cmd="javac,&lt;src_file&gt;"
+			execute_cmd="java,&lt;src_prefix&gt;"
+		></compiler>
+		<compiler
+			lang="Python"
+			id="3"
+			src_prefix="temp"
+			src_suffix=".py"
+			execute_cmd="python,&lt;src_file&gt;"
+		></compiler>
+
 	</platform>
 	<platform os="Windows XP">
 		<pathes

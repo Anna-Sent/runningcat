@@ -173,7 +173,8 @@ public class SubmissionProcessor {
             res = ExitCodes.INTERNAL_ERROR;
             return false;
         } catch (RunTimeErrorException e) {
-            comment.append(ExitCodes.getMsg(ExitCodes.RUNTIME_ERROR));
+            comment.append(ExitCodes.getMsg(ExitCodes.RUNTIME_ERROR) + "\n");
+            comment.append(e.getMessage());
             error.append("Failed tests: " + e.getMessage());
             System.err.println(p.text);
             res = ExitCodes.RUNTIME_ERROR;
