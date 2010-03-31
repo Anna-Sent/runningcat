@@ -45,14 +45,15 @@ public class Compiler {
     }
 
     //public abstract String srcFileSuffix();
-    private InputStream getCompileInput(ProcessExecutor e) throws ProcessNotRunningException {
-        switch (Configuration.getOutputFileDescriptor(lang)) {
+    private InputStream getCompileInput(ProcessExecutor e) throws ProcessNotRunningException, CompilationInternalServerErrorException {
+        int fd = Configuration.getOutputFileDescriptor(lang);
+        switch (fd) {
             case 2:
                 return e.getErrorStream();
             case 1:
                 return e.getInputStream();
             default:
-                return null;
+                throw new CompilationInternalServerErrorException("Compilation output file descriptor is incorrect: got " + fd + ", exptected 1 or 2; language id is " + lang);
         }
     }
 
@@ -63,7 +64,10 @@ public class Compiler {
      * @param program Program to compile.
      * @return one of {@link ExitCodes} values
      */
-    public void compile(Program program) throws CompilationErrorException, CompilationInternalServerErrorException, CompilationTimeLimitExceededException {
+    public void compile(Program program) throws
+            CompilationErrorException,
+            CompilationInternalServerErrorException,
+            CompilationTimeLimitExceededException {
         message = new StringBuffer(100);
         ProcessExecutor executor = new ProcessExecutor(
                 program.getCompileCmd(),
@@ -83,18 +87,18 @@ public class Compiler {
             throw new CompilationInternalServerErrorException("Compilation process running error: " + e);
         } finally {
             try {
-                if (executor.isRunning()) {
-                    int code = executor.waitForExit();
-                    System.err.println("Compilation process exited with code " + code);
-                    System.err.println("Compilation process was run for " + executor.getWorkTime());
-                    if (executor.isOutOfTime()) {
-                        throw new CompilationTimeLimitExceededException("Program is out of time");
-                    }
-                    if (!program.canExecute()) {
-                        processCompileMessage(program);
-                        throw new CompilationErrorException(message.toString());
-                    }
+//                if (executor.isRunning()) {
+                int code = executor.waitForExit();
+                System.err.println("Compilation process exited with code " + code);
+                System.err.println("Compilation process was run for " + executor.getWorkTime());
+                if (executor.isOutOfTime()) {
+                    throw new CompilationTimeLimitExceededException("Compilation process is out of time");
                 }
+                if (!program.canExecute()) {
+                    processCompileMessage(program);
+                    throw new CompilationErrorException(message.toString());
+                }
+                //              }
             } catch (InterruptedException e) {
                 throw new CompilationInternalServerErrorException("Interrupted: " + e);
             } catch (ProcessNotRunningException e) {
@@ -106,7 +110,13 @@ public class Compiler {
     }
 
     private void processCompileMessage(Program p) {
-        int index = message.indexOf(p.getSrcFileName());
+        int index;
+        /*index = message.indexOf(p.getSrcPath());
+        while (index > -1) {
+            message = message.replace(index, index + p.getSrcPath().length(), "");
+            index = message.indexOf(p.getSrcPath());
+        }*/
+        index = message.indexOf(p.getSrcFileName());
         while (index > -1) {
             message = message.replace(index, index + p.getSrcFileName().length(), "");
             index = message.indexOf(p.getSrcFileName());

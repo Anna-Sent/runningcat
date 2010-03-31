@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 
 /**
  *
@@ -53,11 +54,11 @@ public class ProgramTester {
      * Executes and tests the program if it has binary file and system tests are
      * defined.
      *
-     * TASKS: memory.
+     * TODO memory
      *
      * @param program Program to execute.
      * @return one of {@link ExitCodes} values
-     */ // В случае интернал эррор выставить программе статус непроверенной и попробовать схавать ее еще раз?..
+     */
     public void execute(Program program) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
         if (program.canExecute()) {
             if (program.problem != null && program.problem.n > 0) {
@@ -78,12 +79,15 @@ public class ProgramTester {
         BufferedReader testInputReader = null; // reads from test file
         BufferedReader outputReader = null; // reads program's output
         BufferedReader testOutputReader = null; // read a correct test output
+        BufferedReader errorReader = null;
         ProcessExecutor executor = new ProcessExecutor(program.getExecuteCmd(), program.getDirPath(), 3000);
         try {
             executor.execute();
+
             inputWriter = new BufferedWriter(new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
             testInputReader = new BufferedReader(inputGenerator.getReader(testNumber));
             inputDataProcessor.process(inputWriter, testInputReader);
+
             outputReader = new BufferedReader(new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
             testOutputReader = new BufferedReader(new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.out[testNumber]));
             outputDataProcessor.process(outputReader, testOutputReader);
@@ -106,6 +110,18 @@ public class ProgramTester {
         } finally {
             try {
                 //if (executor.isRunning()) {
+                StringBuffer lines = new StringBuffer();
+                try {
+                    errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
+                    String line;
+                    //System.err.println("Error output:");
+                    while ((line = errorReader.readLine()) != null) {
+                        lines.append(line);
+                        //System.err.println(line);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 int code = executor.waitForExit();
                 System.err.println("Process was running for " + executor.getWorkTime());
                 System.err.println("Program in test case " + testNumber + " exited with code " + code);
@@ -113,7 +129,7 @@ public class ProgramTester {
                     throw new TestingTimeLimitExceededException("Program is out of time");
                 }
                 if (code != 0) {
-                    throw new RunTimeErrorException("Program failed with run time error");
+                    throw new RunTimeErrorException(lines.toString());
                 }
                 //}
             } catch (ProcessNotRunningException e) { // from executor.waitForExit(); never
@@ -121,6 +137,7 @@ public class ProgramTester {
             } catch (InterruptedException e) {
                 throw new TestingInternalServerErrorException("Interrupted: " + e);
             } finally {
+                FileOperator.close(errorReader);
                 //FileOperator.close(inputWriter);
                 //FileOperator.close(testInputReader);
                 //FileOperator.close(outputReader);
