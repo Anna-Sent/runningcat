@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataBaseContent;
 
 import DataBaseContent.Generic.DataElement;
@@ -18,6 +15,7 @@ import java.util.HashMap;
  * @author partizanka
  */
 public class Problem extends DataElement {
+
     private String description = "";
     private String restrictions = "";
     private String samples = "";
@@ -28,35 +26,42 @@ public class Problem extends DataElement {
     private HashMap<Integer, Integer> ioparams = null;
     public int n = 0;
     public String[] in = null, out = null;
+
     public Problem(int id, String description, String restrictions, String samples,
             String name, String testsdir,
             ArrayList<Integer> solutions,
             ArrayList<Integer> igenerators,
             HashMap<Integer, Integer> ioparams) {
         this.id = id;
-        this.description=description;
-        this.restrictions=restrictions;
-        this.samples=samples;
-        this.name=name;
-        this.testsdir=testsdir;
-        this.solutions=solutions;
-        this.igenerators=igenerators;
-        this.ioparams=ioparams;
+        this.description = description;
+        this.restrictions = restrictions;
+        this.samples = samples;
+        this.name = name;
+        this.testsdir = testsdir;
+        this.solutions = solutions;
+        this.igenerators = igenerators;
+        this.ioparams = ioparams;
         readTestsDir(Configuration.getTestsDir() + "/" + this.testsdir);
     }
+
     public String getAbsPathToTests() {
-        return Configuration.getTestsDir()+"/"+this.testsdir;
+        return Configuration.getTestsDir() + "/" + this.testsdir;
     }
+
     class inFilenameFilter implements FilenameFilter {
+
         public boolean accept(File f, String name) {
             return (name.startsWith("in") && !name.endsWith("~"));
         }
     }
+
     class outFilenameFilter implements FilenameFilter {
+
         public boolean accept(File f, String name) {
             return (name.startsWith("out") && !name.endsWith("~"));
         }
     }
+
     private void readTestsDir(String path) {
         File dir = new File(path);
         if (dir.exists() && dir.isDirectory()) {

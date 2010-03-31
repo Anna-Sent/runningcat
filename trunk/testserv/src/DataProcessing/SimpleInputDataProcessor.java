@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataProcessing;
 
 import DataProcessing.Exceptions.DataWriteException;
@@ -20,6 +17,7 @@ import java.util.ArrayList;
  * @author partizanka
  */
 public class SimpleInputDataProcessor extends InputDataProcessor {
+
     public void process(BufferedWriter inputWriter, BufferedReader testInputReader)
             throws InputTestReadException, InputWriteException {
         ArrayList<String> lines;

@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataProcessing;
 
 import Program.Program;
@@ -21,7 +18,7 @@ public class ValidInputDataProcessor extends InputDataProcessor {
     }
 
     public void process(BufferedWriter inputWriter, BufferedReader testInputReader)
-        throws InputTestReadException, InputWriteException {
+            throws InputTestReadException, InputWriteException {
         //
     }
 }

@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package ProgramTesting;
 
 import ProgramTesting.Exception.UnsuccessException;
@@ -39,6 +36,7 @@ import java.io.Writer;
  * @author partizanka
  */
 public class ProgramTester {
+
     private InputGenerator inputGenerator;
     private InputDataProcessor inputDataProcessor;
     private OutputDataProcessor outputDataProcessor;
@@ -46,9 +44,9 @@ public class ProgramTester {
     public ProgramTester(InputGenerator inputGenerator,
             InputDataProcessor inputDataProcessor,
             OutputDataProcessor outputDataProcessor) {
-        this.inputGenerator=inputGenerator;
-        this.inputDataProcessor=inputDataProcessor;
-        this.outputDataProcessor=outputDataProcessor;
+        this.inputGenerator = inputGenerator;
+        this.inputDataProcessor = inputDataProcessor;
+        this.outputDataProcessor = outputDataProcessor;
     }
 
     /**
@@ -62,7 +60,7 @@ public class ProgramTester {
      */ // В случае интернал эррор выставить программе статус непроверенной и попробовать схавать ее еще раз?..
     public void execute(Program program) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
         if (program.canExecute()) {
-            if (program.problem!=null && program.problem.n > 0) {
+            if (program.problem != null && program.problem.n > 0) {
                 // executing and testing the program
                 for (int i = 0; i < program.problem.n; ++i) { // testing the program test by test...
                     testProgram(program, i);
@@ -74,12 +72,13 @@ public class ProgramTester {
             throw new TestingInternalServerErrorException("Binary file doesn't exist");
         }
     }
+
     private void testProgram(Program program, int testNumber) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
         BufferedWriter inputWriter = null; // writes to program's input
         BufferedReader testInputReader = null; // reads from test file
         BufferedReader outputReader = null; // reads program's output
         BufferedReader testOutputReader = null; // read a correct test output
-        ProcessExecutor executor = new ProcessExecutor(program.getCmd(), program.getDirPath(), 3000);
+        ProcessExecutor executor = new ProcessExecutor(program.getExecuteCmd(), program.getDirPath(), 3000);
         try {
             executor.execute();
             inputWriter = new BufferedWriter(new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
@@ -91,9 +90,9 @@ public class ProgramTester {
         } catch (ProcessExecutingException ex) { // from executor.execute()
             throw new TestingInternalServerErrorException("Program running error: " + ex);
         } catch (IOException ex) {
-            throw new TestingInternalServerErrorException("Test output not found: "+ex); //UnsuccessException("An I/O error occurs while program testing: " + ex); // absolutely?
+            throw new TestingInternalServerErrorException("Test output not found: " + ex); //UnsuccessException("An I/O error occurs while program testing: " + ex); // absolutely?
         } catch (InputGeneratingException e) {
-            throw new TestingInternalServerErrorException("Input generating error: "+e);
+            throw new TestingInternalServerErrorException("Input generating error: " + e);
         } catch (ComparisonFailedException e) {
             throw new UnsuccessException(e.toString());
         } catch (InputTestReadException e) {
@@ -107,18 +106,20 @@ public class ProgramTester {
         } finally {
             try {
                 //if (executor.isRunning()) {
-                    int code = executor.waitForExit();
-                    System.err.println("Process was running for "+executor.getWorkTime());
-                    System.err.println("Program in test case "+testNumber+" exited with code "+code);
-                    if (executor.isOutOfTime())
-                        throw new TestingTimeLimitExceededException("Program is out of time");
-                    if (code != 0)
-                        throw new RunTimeErrorException("Program failed with run time error");
+                int code = executor.waitForExit();
+                System.err.println("Process was running for " + executor.getWorkTime());
+                System.err.println("Program in test case " + testNumber + " exited with code " + code);
+                if (executor.isOutOfTime()) {
+                    throw new TestingTimeLimitExceededException("Program is out of time");
+                }
+                if (code != 0) {
+                    throw new RunTimeErrorException("Program failed with run time error");
+                }
                 //}
             } catch (ProcessNotRunningException e) { // from executor.waitForExit(); never
                 throw new TestingInternalServerErrorException(e.toString());
             } catch (InterruptedException e) {
-                throw new TestingInternalServerErrorException("Interrupted: "+e);
+                throw new TestingInternalServerErrorException("Interrupted: " + e);
             } finally {
                 //FileOperator.close(inputWriter);
                 //FileOperator.close(testInputReader);

@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataBaseContent;
 
 import DataBaseContent.Generic.Data;
@@ -14,6 +11,7 @@ import java.sql.*;
  * @author partizanka
  */
 public class Solutions extends Data {
+
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
@@ -21,17 +19,20 @@ public class Solutions extends Data {
         int language_id = rs.getInt(3);
         return new Solution(id, source, language_id);
     }
+
     protected Solutions() {
         super();
-        fields = new String[] {"id", "source", "language_id"};
+        fields = new String[]{"id", "source", "language_id"};
         from = "mdl_problemstatement_solution";
     }
+
     @Override
     protected String getWhereString(int id) {
-        return "id="+id;
+        return "id=" + id;
     }
-    private static Solutions instance=null;
+    private static Solutions instance = null;
+
     public static Solutions getInstance() {
-        return instance==null?(instance = new Solutions()):instance;
+        return instance == null ? (instance = new Solutions()) : instance;
     }
 }

@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataBaseContent.Generic;
 
 import java.sql.Connection;
@@ -15,6 +12,7 @@ import java.sql.Statement;
  * @author partizanka
  */
 public class StatementProcessor {
+
     public static void processStatement(
             Connection connection,
             ResultSetProcessor rsp,
@@ -26,15 +24,19 @@ public class StatementProcessor {
             rs = statement.executeQuery(query.getString());
             rsp.processResultSet(rs);
         } catch (SQLException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         } finally {
             try {
-                if (rs!=null && !rs.isClosed()) rs.close();
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             try {
-                if (statement!=null && !statement.isClosed()) statement.close();
+                if (statement != null && !statement.isClosed()) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
