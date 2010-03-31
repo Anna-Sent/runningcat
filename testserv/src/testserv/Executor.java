@@ -9,49 +9,55 @@ import java.sql.*;
  * @author partizanka
  */
 public class Executor {
-    private final String url="jdbc:mysql://localhost/moodle",
-            user="moodleuser",
-            password="moo";
+
+    private final String url = "jdbc:mysql://localhost/moodle",
+            user = "moodleuser",
+            password = "moo";
     private boolean isRunning = false;
     private Connection connection = null;
     private final long timeout = 2000; // ms
+
     public void run() {
-        if (Configuration.loadFromFile("testserv.cfg.xml")!=0) {
+        if (Configuration.loadFromFile("testserv.cfg.xml") != 0) {
             System.err.println("Configuration file not found or parse error");
-            return ;
+            return;
         }
         isRunning = true;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);
             connection.setTransactionIsolation(connection.TRANSACTION_READ_COMMITTED);
-            System.out.println("URL: "+url);
-            System.out.println("Connection: "+connection);
+            System.out.println("URL: " + url);
+            System.out.println("Connection: " + connection);
             Content.loadAll(connection);
             SubmissionProcessor sp = new SubmissionProcessor(connection);
             while (isRunning) {
                 long time1 = System.currentTimeMillis();
                 sp.processSubmission();
-                long time2 = System.currentTimeMillis(), delta = time2-time1;
-                Thread.sleep(timeout-delta>0?timeout-delta:0);
+                long time2 = System.currentTimeMillis(), delta = time2 - time1;
+                Thread.sleep(timeout - delta > 0 ? timeout - delta : 0);
             }
         } catch (ClassNotFoundException e) {
-            System.err.println("Mysql lib not found: "+e);
+            System.err.println("Mysql lib not found: " + e);
         } catch (SQLException e) {
-            System.err.println("SQL error occurs: "+e);
+            System.err.println("SQL error occurs: " + e);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (connection!=null && !connection.isClosed()) connection.close();
+                if (connection != null && !connection.isClosed()) {
+                    connection.close();
+                }
             } catch (SQLException e) {
-                System.err.println("Error while closing connection: "+e);
+                System.err.println("Error while closing connection: " + e);
             }
         }
     }
+
     public void stop() {
         isRunning = false;
     }
+
     public static void main(String[] argv) {
         Executor exec = new Executor();
         exec.run();

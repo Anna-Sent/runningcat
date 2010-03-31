@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package ProgramTesting.Exception;
 
 import Shared.TimeLimitExceededException;
@@ -16,5 +13,4 @@ public class TestingTimeLimitExceededException extends TimeLimitExceededExceptio
     public TestingTimeLimitExceededException(String msg) {
         super(msg);
     }
-
 }

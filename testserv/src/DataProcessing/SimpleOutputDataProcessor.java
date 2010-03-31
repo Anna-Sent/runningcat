@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataProcessing;
 
 import DataProcessing.Exceptions.DataReadException;
@@ -19,6 +16,7 @@ import java.util.ArrayList;
  * @author partizanka
  */
 public class SimpleOutputDataProcessor extends OutputDataProcessor {
+
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
             throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         try {

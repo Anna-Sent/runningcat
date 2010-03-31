@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package ProcessExecuting.Exceptions;
 
 import ProcessExecuting.*;
@@ -16,5 +13,4 @@ public class ProcessCanNotBeRunException extends ProcessExecutingException {
     public ProcessCanNotBeRunException(String msg) {
         super(msg);
     }
-
 }

@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package Compilers.Exceptions;
 
 import Shared.InternalServerErrorException;
@@ -16,5 +13,4 @@ public class CompilationInternalServerErrorException extends InternalServerError
     public CompilationInternalServerErrorException(String msg) {
         super(msg);
     }
-
 }

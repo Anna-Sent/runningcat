@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package ProgramTesting.Exception;
 
 import Shared.InternalServerErrorException;
@@ -16,5 +13,4 @@ public class TestingInternalServerErrorException extends InternalServerErrorExce
     public TestingInternalServerErrorException(String msg) {
         super(msg);
     }
-
 }

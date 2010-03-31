@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package Compilers.Exceptions;
 
 import Shared.TimeLimitExceededException;
@@ -16,5 +13,4 @@ public class CompilationTimeLimitExceededException extends TimeLimitExceededExce
     public CompilationTimeLimitExceededException(String msg) {
         super(msg);
     }
-
 }

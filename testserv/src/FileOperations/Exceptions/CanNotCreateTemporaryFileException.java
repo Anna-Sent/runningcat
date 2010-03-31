@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package FileOperations.Exceptions;
 
 /**
@@ -14,5 +11,4 @@ public class CanNotCreateTemporaryFileException extends Exception {
     public CanNotCreateTemporaryFileException(String msg) {
         super(msg);
     }
-
 }

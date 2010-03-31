@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package ProgramTesting.Exception;
 
 /**
@@ -14,5 +11,4 @@ public class UnsuccessException extends Exception {
     public UnsuccessException(String msg) {
         super(msg);
     }
-
 }

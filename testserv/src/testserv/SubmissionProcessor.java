@@ -1,6 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
 package testserv;
 
@@ -65,7 +63,8 @@ public class SubmissionProcessor {
             langsstr += ("'" + langs[i] + "'" + ((i < langs.length - 1) ? "," : ""));
             //System.err.println(langs[i]);
         }
-        condition = "submission.processed='" + NOT_PROCESSED + "' and submission.langid in (" + langsstr + ")";
+        condition = "submission.processed='" + NOT_PROCESSED + "' and " +
+                "submission.langid in (" + langsstr + ")";
     }
 
     private boolean fillData(ResultSet rs) {
@@ -128,6 +127,9 @@ public class SubmissionProcessor {
 
     private boolean compileProgram(Program p) {
         try {
+            if (p.lang == 3) {
+                return true;
+            }
             Compiler c = CompilerFactory.getInstance().getCompiler(p.lang);
             c.compile(p);
             return true;

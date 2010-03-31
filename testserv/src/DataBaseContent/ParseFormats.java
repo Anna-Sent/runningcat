@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataBaseContent;
 
 import DataBaseContent.Generic.Data;
@@ -14,6 +11,7 @@ import java.sql.*;
  * @author partizanka
  */
 public class ParseFormats extends Data {
+
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
@@ -23,17 +21,20 @@ public class ParseFormats extends Data {
         String write_function = rs.getString(5);
         return new ParseFormat(id, comment, data_type_id, read_function, write_function);
     }
+
     protected ParseFormats() {
         super();
-        fields = new String[] {"id", "comment", "data_type_id", "read_function", "write_function"};
+        fields = new String[]{"id", "comment", "data_type_id", "read_function", "write_function"};
         from = "mdl_problemstatement_parse_format";
     }
+
     @Override
     protected String getWhereString(int id) {
-        return "id="+id;
+        return "id=" + id;
     }
-    private static ParseFormats instance=null;
+    private static ParseFormats instance = null;
+
     public static ParseFormats getInstance() {
-        return instance==null?(instance = new ParseFormats()):instance;
+        return instance == null ? (instance = new ParseFormats()) : instance;
     }
 }

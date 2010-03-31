@@ -1,8 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
  */
-
 package DataProcessing;
 
 import Program.Program;
@@ -21,7 +18,7 @@ public class ValidOutputDataProcessor extends OutputDataProcessor {
     }
 
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
-        throws OutputReadException, OutputTestReadException, ComparisonFailedException {
+            throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         //
     }
 }
