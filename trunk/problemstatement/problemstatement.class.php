@@ -287,7 +287,7 @@ window.onload=add_onchange;
 						case "3": $msg .= get_string("internalerror", "problemstatement"); break;
 						case "4": $msg .= get_string("timeout","problemstatement"); break;
 						case "5": $msg .= get_string("memoryout","problemstatement"); break;
-						case "6": $msg .= get_string("runtimeerror","problemstatement"); break;
+						case "6": $msg .= get_string("runtimeerror","problemstatement")."\n".$submission->submissioncomment; break;
 					}
 					break;
 			case "2": $msg .= get_string("inprocess", "problemstatement"); break;
