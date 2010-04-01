@@ -11,5 +11,10 @@ import java.sql.SQLException;
  */
 public abstract class ResultSetProcessor {
 
+    /**
+     *
+     * @param rs
+     * @throws SQLException
+     */
     public abstract void processResultSet(ResultSet rs) throws SQLException;
 }

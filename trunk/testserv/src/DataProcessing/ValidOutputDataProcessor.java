@@ -13,10 +13,24 @@ import java.io.BufferedReader;
  * @author partizanka
  */
 public class ValidOutputDataProcessor extends OutputDataProcessor {
+    private final Program p;
 
+    /**
+     *
+     * @param p
+     */
     public ValidOutputDataProcessor(Program p) {
+        this.p = p;
     }
 
+    /**
+     *
+     * @param outputReader
+     * @param testOutputReader
+     * @throws OutputReadException
+     * @throws OutputTestReadException
+     * @throws ComparisonFailedException
+     */
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
             throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         //

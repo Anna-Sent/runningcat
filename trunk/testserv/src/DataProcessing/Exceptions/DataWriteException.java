@@ -8,6 +8,10 @@ package DataProcessing.Exceptions;
  */
 public class DataWriteException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public DataWriteException(String msg) {
         super(msg);
     }

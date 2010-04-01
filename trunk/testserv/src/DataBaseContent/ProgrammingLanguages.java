@@ -13,6 +13,12 @@ import java.sql.SQLException;
  */
 public class ProgrammingLanguages extends Data {
 
+    /**
+     * 
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
@@ -21,22 +27,39 @@ public class ProgrammingLanguages extends Data {
         return new ProgrammingLanguage(id, language_name/*, suffix*/);
     }
 
+    /**
+     *
+     */
     protected ProgrammingLanguages() {
         super();
         fields = new String[]{"id", "language_name"/*, "suffix"*/};
         from = "mdl_problemstatement_programming_language";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     protected String getWhereString(int id) {
         return "id=" + id;
     }
     private static ProgrammingLanguages instance = null;
 
+    /**
+     *
+     * @return
+     */
     public static ProgrammingLanguages getInstance() {
         return instance == null ? (instance = new ProgrammingLanguages()) : instance;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public ProgrammingLanguage getProgrammingLanguageById(int id) {
         return (ProgrammingLanguage) super.getElementById(id);
     }

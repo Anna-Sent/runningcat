@@ -10,6 +10,10 @@ import ProcessExecuting.*;
  */
 public class ProcessCanNotBeRunException extends ProcessExecutingException {
 
+    /**
+     * 
+     * @param msg
+     */
     public ProcessCanNotBeRunException(String msg) {
         super(msg);
     }

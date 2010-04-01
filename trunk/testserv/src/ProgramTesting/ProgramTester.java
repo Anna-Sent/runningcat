@@ -41,7 +41,14 @@ public class ProgramTester {
     private InputGenerator inputGenerator;
     private InputDataProcessor inputDataProcessor;
     private OutputDataProcessor outputDataProcessor;
+    private StringBuffer message;
 
+    /**
+     *
+     * @param inputGenerator
+     * @param inputDataProcessor
+     * @param outputDataProcessor
+     */
     public ProgramTester(InputGenerator inputGenerator,
             InputDataProcessor inputDataProcessor,
             OutputDataProcessor outputDataProcessor) {
@@ -57,7 +64,10 @@ public class ProgramTester {
      * TODO memory
      *
      * @param program Program to execute.
-     * @return one of {@link ExitCodes} values
+     * @throws UnsuccessException
+     * @throws TestingInternalServerErrorException 
+     * @throws TestingTimeLimitExceededException
+     * @throws RunTimeErrorException
      */
     public void execute(Program program) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
         if (program.canExecute()) {
@@ -71,6 +81,15 @@ public class ProgramTester {
             }
         } else {
             throw new TestingInternalServerErrorException("Binary file doesn't exist");
+        }
+    }
+
+    private void processMessage(Program p) {
+        int index;
+        index = message.indexOf(p.getSrcFileName());
+        while (index > -1) {
+            message = message.replace(index, index + p.getSrcFileName().length(), "&lt;code&gt;");
+            index = message.indexOf(p.getSrcFileName());
         }
     }
 
@@ -110,13 +129,13 @@ public class ProgramTester {
         } finally {
             try {
                 //if (executor.isRunning()) {
-                StringBuffer lines = new StringBuffer();
+                message = new StringBuffer(100);
                 try {
                     errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
                     String line;
                     //System.err.println("Error output:");
                     while ((line = errorReader.readLine()) != null) {
-                        lines.append(line);
+                        message.append(line+"\n");
                         //System.err.println(line);
                     }
                 } catch (Exception e) {
@@ -129,7 +148,8 @@ public class ProgramTester {
                     throw new TestingTimeLimitExceededException("Program is out of time");
                 }
                 if (code != 0) {
-                    throw new RunTimeErrorException(lines.toString());
+                    processMessage(program);
+                    throw new RunTimeErrorException(message.toString());
                 }
                 //}
             } catch (ProcessNotRunningException e) { // from executor.waitForExit(); never

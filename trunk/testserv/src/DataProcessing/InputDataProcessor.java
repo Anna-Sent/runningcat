@@ -13,6 +13,13 @@ import java.io.BufferedWriter;
  */
 public abstract class InputDataProcessor extends DataProcessor {
 
+    /**
+     *
+     * @param inputWriter
+     * @param testInputReader
+     * @throws InputTestReadException
+     * @throws InputWriteException
+     */
     public abstract void process(BufferedWriter inputWriter,
             BufferedReader testInputReader)
             throws InputTestReadException, InputWriteException;

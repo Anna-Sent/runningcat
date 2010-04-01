@@ -18,6 +18,13 @@ import java.util.ArrayList;
  */
 public class SimpleInputDataProcessor extends InputDataProcessor {
 
+    /**
+     *
+     * @param inputWriter
+     * @param testInputReader
+     * @throws InputTestReadException
+     * @throws InputWriteException
+     */
     public void process(BufferedWriter inputWriter, BufferedReader testInputReader)
             throws InputTestReadException, InputWriteException {
         ArrayList<String> lines;

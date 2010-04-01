@@ -10,6 +10,10 @@ import Shared.InternalServerErrorException;
  */
 public class CompilationInternalServerErrorException extends InternalServerErrorException {
 
+    /**
+     *
+     * @param msg
+     */
     public CompilationInternalServerErrorException(String msg) {
         super(msg);
     }

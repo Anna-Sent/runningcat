@@ -26,6 +26,12 @@ public class ProcessExecutor {
     private InputStream errorStream, inputStream;
     private OutputStream outputStream;
 
+    /**
+     *
+     * @param cmd
+     * @param curDir
+     * @param timeLimit
+     */
     public ProcessExecutor(String[] cmd, String curDir, long timeLimit) {
         this.cmd = cmd;
         if (curDir != null && curDir.compareTo("") != 0) {
@@ -36,6 +42,11 @@ public class ProcessExecutor {
         this.timeLimit = timeLimit;
     }
 
+    /**
+     *
+     * @throws ProcessRunningException
+     * @throws ProcessCanNotBeRunException
+     */
     public void execute() throws ProcessRunningException, ProcessCanNotBeRunException {
         if (process == null) {
             if (cmd != null) {
@@ -58,10 +69,20 @@ public class ProcessExecutor {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isRunning() {
         return process != null;
     }
 
+    /**
+     *
+     * @return
+     * @throws ProcessNotRunningException
+     * @throws InterruptedException
+     */
     public int waitForExit() throws ProcessNotRunningException, InterruptedException {
         if (process != null) {
             try {
@@ -76,14 +97,27 @@ public class ProcessExecutor {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isOutOfTime() {
         return (endTime - beginTime >= timeLimit);
     }
 
+    /**
+     *
+     * @return
+     */
     public long getWorkTime() {
         return endTime - beginTime;
     }
 
+    /**
+     *
+     * @return
+     * @throws ProcessNotRunningException
+     */
     public InputStream getInputStream() throws ProcessNotRunningException {
         if (process != null) {
             return inputStream;// process.getInputStream();
@@ -92,6 +126,11 @@ public class ProcessExecutor {
         }
     }
 
+    /**
+     *
+     * @return
+     * @throws ProcessNotRunningException
+     */
     public OutputStream getOutputStream() throws ProcessNotRunningException {
         if (process != null) {
             return outputStream;// process.getOutputStream();
@@ -100,6 +139,11 @@ public class ProcessExecutor {
         }
     }
 
+    /**
+     *
+     * @return
+     * @throws ProcessNotRunningException
+     */
     public InputStream getErrorStream() throws ProcessNotRunningException {
         if (process != null) {
             return errorStream;// process.getErrorStream();
@@ -122,6 +166,10 @@ public class ProcessExecutor {
         }
     }
 
+    /**
+     *
+     * @param argv
+     */
     public static void main(String[] argv) {
         ProcessExecutor executor = new ProcessExecutor(new String[]{"test53769.exe"}, null, 1000);
         try {

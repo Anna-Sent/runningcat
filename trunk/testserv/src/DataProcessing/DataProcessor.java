@@ -19,6 +19,12 @@ import java.util.Scanner;
  */
 public class DataProcessor {
 
+    /**
+     *
+     * @param list1
+     * @param list2
+     * @return
+     */
     public boolean isEqual(ArrayList<String> list1, ArrayList<String> list2) {
         int count1 = list1.size(), count2 = list2.size();
         if (count1 > count2) {
@@ -35,6 +41,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     * 
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<String> read(BufferedReader reader)
             throws DataReadException {
         ArrayList<String> lines = new ArrayList<String>();
@@ -49,6 +61,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param writer
+     * @param lines
+     * @throws DataWriteException
+     */
     public void write(BufferedWriter writer, ArrayList<String> lines)
             throws DataWriteException {
         try {
@@ -61,6 +79,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public Long readLong(Reader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextLong()) {
@@ -70,6 +94,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public Double readDouble(BufferedReader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextDouble()) {
@@ -79,6 +109,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public String readString(BufferedReader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextLine()) {
@@ -88,6 +124,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public Character readCharacter(BufferedReader reader) throws DataReadException {
         try {
             return new Character((char) reader.read());
@@ -96,6 +138,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<Long> readArrayOfLong(BufferedReader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextInt()) {
@@ -114,6 +162,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<Double> readArrayOfDouble(BufferedReader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextInt()) {
@@ -132,6 +186,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<String> readArrayOfString(BufferedReader reader) throws DataReadException {
         Scanner scanner = new Scanner(reader);
         if (scanner.hasNextInt()) {
@@ -150,6 +210,12 @@ public class DataProcessor {
         }
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<Character> readArrayOfCharacter(BufferedReader reader) throws DataReadException {
         return null;
         /*Scanner scanner = new Scanner(reader);
@@ -166,18 +232,42 @@ public class DataProcessor {
         throw new DataErrorException("Reading array of long value error");*/
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<ArrayList<Integer>> readArrayOfArrayOfInteger(BufferedReader reader) throws DataReadException {
         return null;
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<ArrayList<Double>> readArrayOfArrayOfDouble(BufferedReader reader) throws DataReadException {
         return null;
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<ArrayList<String>> readArrayOfArrayOfString(BufferedReader reader) throws DataReadException {
         return null;
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws DataReadException
+     */
     public ArrayList<ArrayList<Character>> readArrayOfArrayOfCharacter(BufferedReader reader) throws DataReadException {
         return null;
     }

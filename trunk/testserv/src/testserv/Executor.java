@@ -17,6 +17,9 @@ public class Executor {
     private Connection connection = null;
     private final long timeout = 2000; // ms
 
+    /**
+     * 
+     */
     public void run() {
         if (Configuration.loadFromFile("testserv.cfg.xml") != 0) {
             System.err.println("Configuration file not found or parse error");
@@ -54,10 +57,17 @@ public class Executor {
         }
     }
 
+    /**
+     *
+     */
     public void stop() {
         isRunning = false;
     }
 
+    /**
+     *
+     * @param argv
+     */
     public static void main(String[] argv) {
         Executor exec = new Executor();
         exec.run();

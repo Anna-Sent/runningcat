@@ -10,6 +10,10 @@ import Shared.TimeLimitExceededException;
  */
 public class TestingTimeLimitExceededException extends TimeLimitExceededException {
 
+    /**
+     * 
+     * @param msg
+     */
     public TestingTimeLimitExceededException(String msg) {
         super(msg);
     }

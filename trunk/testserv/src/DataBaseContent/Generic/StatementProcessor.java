@@ -13,6 +13,12 @@ import java.sql.Statement;
  */
 public class StatementProcessor {
 
+    /**
+     *
+     * @param connection
+     * @param rsp
+     * @param query
+     */
     public static void processStatement(
             Connection connection,
             ResultSetProcessor rsp,

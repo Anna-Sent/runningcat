@@ -17,6 +17,12 @@ import java.util.ArrayList;
  */
 public class Problems extends Data {
 
+    /**
+     *
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
@@ -31,22 +37,35 @@ public class Problems extends Data {
         return new Problem(id, description, restrictions, samples, name, testsdir, solutions, igenerators, ioparams);
     }
 
+    /**
+     *
+     */
     protected Problems() {
         super();
         fields = new String[]{"id", "description", "restrictions", "samples", "name", "testsdir"};
         from = "mdl_problemstatement_problem";
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     protected String getWhereString(int id) {
         return "id=" + id;
     }
     private static Problems instance = null;
 
+    /**
+     *
+     * @return
+     */
     public static Problems getInstance() {
         return instance == null ? (instance = new Problems()) : instance;
     }
 
+    @SuppressWarnings("static-access")
     private HashMap<Integer, Integer> getIOParams(int problem_id, Connection connection) {
         class ioparamsReader extends ResultSetProcessor {
 
@@ -66,7 +85,7 @@ public class Problems extends Data {
             }
         }
         HashMap<Integer, Integer> ioparams = new HashMap<Integer, Integer>();
-        new StatementProcessor().processStatement(connection,
+        StatementProcessor.processStatement(connection,
                 new ioparamsReader(ioparams),
                 new SelectQueryString(
                 new String[]{"n", "format_id"},
@@ -75,6 +94,7 @@ public class Problems extends Data {
         return ioparams;
     }
 
+    @SuppressWarnings("static-access")
     private ArrayList<Integer> getIGenerators(int problem_id, Connection connection) {
         class igeneratorsReader extends ResultSetProcessor {
 
@@ -93,7 +113,7 @@ public class Problems extends Data {
             }
         }
         ArrayList<Integer> igenerators = new ArrayList<Integer>();
-        new StatementProcessor().processStatement(connection,
+        StatementProcessor.processStatement(connection,
                 new igeneratorsReader(igenerators),
                 new SelectQueryString(
                 new String[]{"input_generator_id"},
@@ -102,6 +122,7 @@ public class Problems extends Data {
         return igenerators;
     }
 
+    @SuppressWarnings("static-access")
     private ArrayList<Integer> getSolutions(int problem_id, Connection connection) {
         class solutionsReader extends ResultSetProcessor {
 
@@ -120,7 +141,7 @@ public class Problems extends Data {
             }
         }
         ArrayList<Integer> solutions = new ArrayList<Integer>();
-        new StatementProcessor().processStatement(connection,
+        StatementProcessor.processStatement(connection,
                 new solutionsReader(solutions),
                 new SelectQueryString(
                 new String[]{"solution_id"},
@@ -129,6 +150,11 @@ public class Problems extends Data {
         return solutions;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public Problem getProblemById(int id) {
         return (Problem) super.getElementById(id);
     }

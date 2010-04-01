@@ -8,6 +8,10 @@ package ProgramTesting.Exception;
  */
 public class UnsuccessException extends Exception {
 
+    /**
+     * 
+     * @param msg
+     */
     public UnsuccessException(String msg) {
         super(msg);
     }

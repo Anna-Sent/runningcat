@@ -8,6 +8,10 @@ package Compilers.Exceptions;
  */
 public class CompilationErrorException extends Exception {
 
+    /**
+     * 
+     * @param msg
+     */
     public CompilationErrorException(String msg) {
         super(msg);
     }

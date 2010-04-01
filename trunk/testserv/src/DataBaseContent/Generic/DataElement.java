@@ -8,5 +8,8 @@ package DataBaseContent.Generic;
  */
 public class DataElement {
 
+    /**
+     *
+     */
     protected int id;
 }

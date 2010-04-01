@@ -16,10 +16,20 @@ public class InputFromFileGenerator extends InputGenerator {
 
     private Program program;
 
+    /**
+     *
+     * @param program
+     */
     public InputFromFileGenerator(Program program) {
         this.program = program;
     }
 
+    /**
+     *
+     * @param testNumber
+     * @return
+     * @throws InputGeneratingException
+     */
     public Reader getReader(int testNumber) throws InputGeneratingException {
         Reader reader = null;
         try {

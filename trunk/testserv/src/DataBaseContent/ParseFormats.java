@@ -12,6 +12,12 @@ import java.sql.*;
  */
 public class ParseFormats extends Data {
 
+    /**
+     *
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
@@ -22,18 +28,30 @@ public class ParseFormats extends Data {
         return new ParseFormat(id, comment, data_type_id, read_function, write_function);
     }
 
+    /**
+     *
+     */
     protected ParseFormats() {
         super();
         fields = new String[]{"id", "comment", "data_type_id", "read_function", "write_function"};
         from = "mdl_problemstatement_parse_format";
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     @Override
     protected String getWhereString(int id) {
         return "id=" + id;
     }
     private static ParseFormats instance = null;
 
+    /**
+     *
+     * @return
+     */
     public static ParseFormats getInstance() {
         return instance == null ? (instance = new ParseFormats()) : instance;
     }

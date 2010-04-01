@@ -17,6 +17,14 @@ import java.util.ArrayList;
  */
 public class SimpleOutputDataProcessor extends OutputDataProcessor {
 
+    /**
+     *
+     * @param outputReader
+     * @param testOutputReader
+     * @throws OutputReadException
+     * @throws OutputTestReadException
+     * @throws ComparisonFailedException
+     */
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
             throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         try {

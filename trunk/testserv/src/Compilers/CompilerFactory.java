@@ -22,10 +22,20 @@ public class CompilerFactory {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static CompilerFactory getInstance() {
         return (factory == null) ? (factory = new CompilerFactory()) : factory;
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     * @throws CompilationInternalServerErrorException
+     */
     public Compiler getCompiler(int lang) throws CompilationInternalServerErrorException {
         Compiler c = compilers.get(new Integer(lang));
         if (c != null) {

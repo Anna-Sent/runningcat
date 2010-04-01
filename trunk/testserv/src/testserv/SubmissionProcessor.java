@@ -53,6 +53,10 @@ public class SubmissionProcessor {
             IN_PROCESS = 2;
     private Connection connection;
 
+    /**
+     * 
+     * @param connection
+     */
     public SubmissionProcessor(Connection connection) {
         this.connection = connection;
         comment = new StringBuffer();
@@ -232,8 +236,12 @@ public class SubmissionProcessor {
         }
     }
 
+    /**
+     *
+     */
+    @SuppressWarnings("static-access")
     public void processSubmission() {
-        new StatementProcessor().processStatement(connection, new myRSProc(),
+        StatementProcessor.processStatement(connection, new myRSProc(),
                 new SelectQueryString(
                 new String[]{
                     "submission.id",

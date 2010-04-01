@@ -36,10 +36,17 @@ import java.sql.SQLException;
  */
 public class Compiler {
 
+    /**
+     *
+     */
     protected StringBuffer message;
     private long TIME_LIMIT = 30000;
     private int lang;
 
+    /**
+     *
+     * @param lang
+     */
     public Compiler(int lang) {
         this.lang = lang;
     }
@@ -62,7 +69,9 @@ public class Compiler {
      * Runs compiler. If compilation is successfull, binary file is created.
      * 
      * @param program Program to compile.
-     * @return one of {@link ExitCodes} values
+     * @throws CompilationErrorException
+     * @throws CompilationInternalServerErrorException
+     * @throws CompilationTimeLimitExceededException
      */
     public void compile(Program program) throws
             CompilationErrorException,
@@ -95,7 +104,7 @@ public class Compiler {
                     throw new CompilationTimeLimitExceededException("Compilation process is out of time");
                 }
                 if (!program.canExecute()) {
-                    processCompileMessage(program);
+                    processMessage(program);
                     throw new CompilationErrorException(message.toString());
                 }
                 //              }
@@ -109,52 +118,20 @@ public class Compiler {
         }
     }
 
-    private void processCompileMessage(Program p) {
+    private void processMessage(Program p) {
         int index;
-        /*index = message.indexOf(p.getSrcPath());
-        while (index > -1) {
-            message = message.replace(index, index + p.getSrcPath().length(), "");
-            index = message.indexOf(p.getSrcPath());
-        }*/
         index = message.indexOf(p.getSrcFileName());
         while (index > -1) {
-            message = message.replace(index, index + p.getSrcFileName().length(), "");
+            message = message.replace(index, index + p.getSrcFileName().length(), "&lt;code&gt;");
             index = message.indexOf(p.getSrcFileName());
         }
     }
-    /*protected void processCompileMessage() { // depends on fpc output
-    String[] lines = message.toString().split("\n");
-    for (int i=0;i<4;++i) {
-    int index = message.indexOf(lines[i]);
-    message.delete(index, index+lines[i].length()+1);
-    }
-    for (int i=4;i<lines.length-2;++i) {
-    int index = lines[i].indexOf(srcFileSuffix());
-    String part = lines[i].substring(0,index+srcFileSuffix().length());
-    message.delete(message.indexOf(part), message.indexOf(part)+part.length());
-    }
-    for (int i=lines.length-2;i<lines.length;++i) {
-    int index = message.indexOf(lines[i]);
-    message.delete(index, index+lines[i].length()+1);
-    }
-    }*/
-    /*protected void processCompileMessage() { // depend on g++ output
-    String lines[] = message.toString().split(":");
-    ArrayList<String> array = new ArrayList<String>();
-    for (int i=0;i<lines.length;++i) {
-    String sublines[] = lines[i].split("\n");
-    for (int j=0;j<sublines.length;++j)
-    array.add(sublines[j]);
-    }
-    for (int i=0;i<array.size();++i) {
-    String cur = array.get(i);
-    if (cur.endsWith(srcFileSuffix())) {
-    int index = message.indexOf(cur);
-    message.delete(index, index+cur.length());
-    }
-    }
-    }*/
 
+    /**
+     *
+     * @param argv
+     */
+    @SuppressWarnings("static-access")
     public static void main(String argv[]) {
         if (Configuration.loadFromFile("testserv.cfg.xml") != 0) {
             System.err.println("Configuration file not found or parse error");
@@ -172,7 +149,7 @@ public class Compiler {
             System.out.println("URL: " + url);
             System.out.println("Connection: " + connection);
             //Content.loadAll(connection);
-            Problems.getInstance().connection = connection;
+            Problems.connection = connection;
             //p = new Program(0, "#include <stdio.h>\n"+
             //  "main() {sdf printf(\"hello world\"); return 0; }\n", Problems.getInstance().getProblemById(1));
             p = new Program(1, "const nmax=1000;\n" +

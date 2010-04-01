@@ -8,6 +8,10 @@ package FileOperations.Exceptions;
  */
 public class CanNotCreateTemporaryDirectoryException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public CanNotCreateTemporaryDirectoryException(String msg) {
         super(msg);
     }
