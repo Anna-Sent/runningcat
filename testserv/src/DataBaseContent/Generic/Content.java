@@ -11,6 +11,10 @@ import java.sql.Connection;
  */
 public class Content {
 
+    /**
+     * 
+     * @param connection
+     */
     public static void loadAll(Connection connection) {
         DataTypes.connection = connection;
         DataTypes.getInstance().loadAll();

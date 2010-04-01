@@ -10,6 +10,10 @@ import Shared.InternalServerErrorException;
  */
 public class TestingInternalServerErrorException extends InternalServerErrorException {
 
+    /**
+     * 
+     * @param msg
+     */
     public TestingInternalServerErrorException(String msg) {
         super(msg);
     }

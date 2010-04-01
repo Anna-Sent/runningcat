@@ -24,9 +24,30 @@ public class Problem extends DataElement {
     private ArrayList<Integer> solutions = null;
     private ArrayList<Integer> igenerators = null;
     private HashMap<Integer, Integer> ioparams = null;
+    /**
+     *
+     */
     public int n = 0;
+    /**
+     *
+     */
+    /**
+     *
+     */
     public String[] in = null, out = null;
 
+    /**
+     *
+     * @param id
+     * @param description
+     * @param restrictions
+     * @param samples
+     * @param name
+     * @param testsdir
+     * @param solutions
+     * @param igenerators
+     * @param ioparams
+     */
     public Problem(int id, String description, String restrictions, String samples,
             String name, String testsdir,
             ArrayList<Integer> solutions,
@@ -44,6 +65,10 @@ public class Problem extends DataElement {
         readTestsDir(Configuration.getTestsDir() + "/" + this.testsdir);
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getAbsPathToTests() {
         return Configuration.getTestsDir() + "/" + this.testsdir;
     }

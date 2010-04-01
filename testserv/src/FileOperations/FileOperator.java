@@ -33,6 +33,14 @@ public class FileOperator {
         return path;
     }
 
+    /**
+     *
+     * @param prefix
+     * @param suffix
+     * @param directoryPath
+     * @return
+     * @throws CanNotCreateTemporaryFileException
+     */
     public static String createFile(
             String prefix, String suffix, String directoryPath)
             throws CanNotCreateTemporaryFileException {
@@ -49,6 +57,14 @@ public class FileOperator {
         return path;
     }
 
+    /**
+     * 
+     * @param prefix
+     * @param suffix
+     * @param directoryPath
+     * @return
+     * @throws CanNotCreateTemporaryDirectoryException
+     */
     public static String createDirectory(
             String prefix, String suffix, String directoryPath)
             throws CanNotCreateTemporaryDirectoryException {
@@ -70,6 +86,10 @@ public class FileOperator {
         return path;
     }
 
+    /**
+     *
+     * @param path
+     */
     public static void deleteFile(String path) {
         File file = new File(path);
         if (file.exists()) {
@@ -77,6 +97,10 @@ public class FileOperator {
         }
     }
 
+    /**
+     *
+     * @param path
+     */
     public static void deleteDir(String path) {
         File dir = new File(path);
         if (dir.exists()) {
@@ -92,6 +116,12 @@ public class FileOperator {
         dir.delete();
     }
 
+    /**
+     *
+     * @param path
+     * @param text
+     * @throws CanNotWriteFileException
+     */
     public static void writeFile(String path, String text)
             throws CanNotWriteFileException {
         BufferedWriter output = null;
@@ -113,6 +143,10 @@ public class FileOperator {
         }
     }
 
+    /**
+     *
+     * @param reader
+     */
     public static void close(Reader reader) {
         try {
             if (reader != null) {
@@ -123,6 +157,10 @@ public class FileOperator {
         }
     }
 
+    /**
+     *
+     * @param writer
+     */
     public static void close(Writer writer) {
         try {
             if (writer != null) {

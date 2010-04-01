@@ -10,6 +10,12 @@ public class SelectQueryString {
 
     private String query;
 
+    /**
+     *
+     * @param fields
+     * @param from
+     * @param where
+     */
     public SelectQueryString(
             String[] fields,
             String from,
@@ -24,12 +30,21 @@ public class SelectQueryString {
         }
     }
 
+    /**
+     *
+     * @param fields
+     * @param from
+     */
     public SelectQueryString(
             String[] fields,
             String from) {
         this(fields, from, null);
     }
 
+    /**
+     *
+     * @return
+     */
     public String getString() {
         return query;
     }

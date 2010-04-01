@@ -8,6 +8,10 @@ package DataProcessing.Exceptions;
  */
 public class DataReadException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public DataReadException(String msg) {
         super(msg);
     }

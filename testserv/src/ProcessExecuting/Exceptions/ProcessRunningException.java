@@ -8,6 +8,10 @@ package ProcessExecuting.Exceptions;
  */
 public class ProcessRunningException extends ProcessExecutingException {
 
+    /**
+     * 
+     * @param msg
+     */
     public ProcessRunningException(String msg) {
         super(msg);
     }

@@ -11,5 +11,11 @@ import java.io.Reader;
  */
 public abstract class InputGenerator {
 
+    /**
+     * 
+     * @param testNumber
+     * @return
+     * @throws InputGeneratingException
+     */
     public abstract Reader getReader(int testNumber) throws InputGeneratingException;
 }

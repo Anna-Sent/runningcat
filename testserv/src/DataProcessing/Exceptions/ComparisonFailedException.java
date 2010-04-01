@@ -8,6 +8,10 @@ package DataProcessing.Exceptions;
  */
 public class ComparisonFailedException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public ComparisonFailedException(String msg) {
         super(msg);
     }

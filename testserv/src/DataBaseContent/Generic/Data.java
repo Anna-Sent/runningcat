@@ -13,9 +13,18 @@ import java.util.HashMap;
  */
 public class Data {
 
+    /**
+     *
+     */
     public static Connection connection;
     private HashMap<Integer, DataElement> elements = new HashMap<Integer, DataElement>();
 
+    /**
+     *
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     protected DataElement getElement(ResultSet rs) throws SQLException {
         return null;
     }
@@ -33,24 +42,48 @@ public class Data {
         }
     }
 
+    @SuppressWarnings("static-access")
     private void load(SelectQueryString query) {
-        new StatementProcessor().processStatement(
+        StatementProcessor.processStatement(
                 connection, new myRSProc(), query);
     }
+    /**
+     *
+     */
+    /**
+     *
+     */
     protected String fields[], from;
 
+    /**
+     *
+     */
     public void loadAll() {
         load(new SelectQueryString(fields, from));
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     protected String getWhereString(int id) {
         return "";
     }
 
+    /**
+     *
+     * @param id
+     */
     public void loadOne(int id) {
         load(new SelectQueryString(fields, from, getWhereString(id)));
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     protected DataElement getElementById(int id) {
         if (!elements.containsKey(new Integer(id))) {
             loadOne(id);
@@ -58,6 +91,11 @@ public class Data {
         return elements.get(new Integer(id));
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public boolean contains(int id) {
         return elements.containsKey(new Integer(id));
     }

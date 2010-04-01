@@ -8,6 +8,10 @@ package FileOperations.Exceptions;
  */
 public class CanNotWriteFileException extends Exception {
 
+    /**
+     * 
+     * @param msg
+     */
     public CanNotWriteFileException(String msg) {
         super(msg);
     }

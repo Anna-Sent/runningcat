@@ -111,6 +111,10 @@ class Platform {
     }
 }
 
+/**
+ *
+ * @author Анна
+ */
 public class Configuration {
 
     private static Document config = null;
@@ -121,6 +125,11 @@ public class Configuration {
         osname = System.getProperty("os.name");
     }
 
+    /**
+     *
+     * @param filename
+     * @return
+     */
     public static int loadFromFile(String filename) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = null;
@@ -200,42 +209,88 @@ public class Configuration {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getTestsDir() {
         return platforms.get(osname).tests;
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getTmpDir() {
         return platforms.get(osname).tmp;
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     */
     public static String[] getCompilerCommand(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).compile_cmd.split(",");
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     */
     public static String[] getExecuteCommand(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).execute_cmd.split(",");
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     */
     public static String getBinarySuffix(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).bin_suffix;
     }
 
+    /**
+     * 
+     * @param lang
+     * @return
+     */
     public static String getSourceSuffix(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).src_suffix;
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     */
     public static String getSourcePrefix(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).src_prefix;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Integer[] getLangs() {
         return platforms.get(osname).compilers.keySet().toArray(new Integer[0]);
     }
 
+    /**
+     *
+     * @param lang
+     * @return
+     */
     public static int getOutputFileDescriptor(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).output_file_descriptor;
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         System.err.println(osname);
         int res = loadFromFile("testserv.cfg.xml");
