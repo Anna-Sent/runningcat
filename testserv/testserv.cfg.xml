@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-<comment>
-Testing System executes the command ("compile_cmd" and "execute_cmd" attributes values) 
-and arguments in a separate process with the specified working directory (in tmp/ directory).
-Constants: src_path, src_file, bin_path, bin_file, src_prefix.
-</comment>
+	<comment>
+		Testing System executes the command ("compile_cmd" and "execute_cmd" attributes values) 
+		and arguments in a separate process with the specified working directory (in tmp/ directory).
+		Constants: src_path, src_file, bin_path, bin_file, src_prefix.
+	</comment>
+	<general
+		url="jdbc:mysql://localhost/moodle"
+		user="moodleuser"
+		password="moo"
+	></general>
 	<platform os="Linux">
 		<pathes
 			tmp="/tmp"

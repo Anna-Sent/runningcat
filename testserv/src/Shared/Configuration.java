@@ -120,6 +120,7 @@ public class Configuration {
     private static Document config = null;
     private static HashMap<String, Platform> platforms;
     private static String osname;
+    private static String url, user, password;
 
     static {
         osname = System.getProperty("os.name");
@@ -153,11 +154,22 @@ public class Configuration {
         int type = node.getNodeType();
         switch (type) {
             case Node.DOCUMENT_NODE: {
-                parse(((Document) node).getDocumentElement());
+                parse(((Document)node).getDocumentElement());
                 break;
             }
             case Node.ELEMENT_NODE: {
-                if (node.getNodeName().equals("platform")) {
+                if (node.getNodeName().equals("general")) {
+                    NamedNodeMap attributes = node.getAttributes();
+                    for (int i=0;i<attributes.getLength();++i) {
+                        if (attributes.item(i).getNodeName().equals("url")) {
+                            url = attributes.item(i).getNodeValue();
+                        } else if (attributes.item(i).getNodeName().equals("user")) {
+                            user = attributes.item(i).getNodeValue();
+                        } else if (attributes.item(i).getNodeName().equals("password")) {
+                            password = attributes.item(i).getNodeValue();
+                        }
+                    }
+                } else if (node.getNodeName().equals("platform")) {
                     Platform pl = new Platform(node);
                     platforms.put(pl.os, pl);
                 } else if (node.hasChildNodes()) {
@@ -285,6 +297,18 @@ public class Configuration {
      */
     public static int getOutputFileDescriptor(int lang) {
         return platforms.get(osname).compilers.get(new Integer(lang)).output_file_descriptor;
+    }
+
+    public static String getURL() {
+        return url;
+    }
+
+    public static String getUser() {
+        return user;
+    }
+
+    public static String getPassword() {
+        return password;
     }
 
     /**

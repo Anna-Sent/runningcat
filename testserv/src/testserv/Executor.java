@@ -10,9 +10,9 @@ import java.sql.*;
  */
 public class Executor {
 
-    private final String url = "jdbc:mysql://localhost/moodle",
-            user = "moodleuser",
-            password = "moo";
+    //private final String url = "jdbc:mysql://localhost/moodle",
+      //      user = "moodleuser",
+        //    password = "moo";
     private boolean isRunning = false;
     private Connection connection = null;
     private final long timeout = 2000; // ms
@@ -28,9 +28,12 @@ public class Executor {
         isRunning = true;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(
+                    Configuration.getURL(),
+                    Configuration.getUser(),
+                    Configuration.getPassword());
             connection.setTransactionIsolation(connection.TRANSACTION_READ_COMMITTED);
-            System.out.println("URL: " + url);
+            System.out.println("URL: " + Configuration.getURL());
             System.out.println("Connection: " + connection);
             Content.loadAll(connection);
             SubmissionProcessor sp = new SubmissionProcessor(connection);
