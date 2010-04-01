@@ -69,7 +69,11 @@ public class ProgramTester {
      * @throws TestingTimeLimitExceededException
      * @throws RunTimeErrorException
      */
-    public void execute(Program program) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
+    public void execute(Program program) throws
+            UnsuccessException,
+            TestingInternalServerErrorException,
+            RunTimeErrorException,
+            TestingTimeLimitExceededException {
         if (program.canExecute()) {
             if (program.problem != null && program.problem.n > 0) {
                 // executing and testing the program
@@ -93,7 +97,11 @@ public class ProgramTester {
         }
     }
 
-    private void testProgram(Program program, int testNumber) throws UnsuccessException, TestingInternalServerErrorException, RunTimeErrorException, TestingTimeLimitExceededException {
+    private void testProgram(Program program, int testNumber) throws
+            UnsuccessException,
+            TestingInternalServerErrorException,
+            RunTimeErrorException,
+            TestingTimeLimitExceededException {
         BufferedWriter inputWriter = null; // writes to program's input
         BufferedReader testInputReader = null; // reads from test file
         BufferedReader outputReader = null; // reads program's output
@@ -103,12 +111,16 @@ public class ProgramTester {
         try {
             executor.execute();
 
-            inputWriter = new BufferedWriter(new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
-            testInputReader = new BufferedReader(inputGenerator.getReader(testNumber));
+            inputWriter = new BufferedWriter(
+                    new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
+            testInputReader = new BufferedReader(
+                    inputGenerator.getReader(testNumber));
             inputDataProcessor.process(inputWriter, testInputReader);
 
-            outputReader = new BufferedReader(new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
-            testOutputReader = new BufferedReader(new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.out[testNumber]));
+            outputReader = new BufferedReader(
+                    new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
+            testOutputReader = new BufferedReader(
+                    new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.out[testNumber]));
             outputDataProcessor.process(outputReader, testOutputReader);
         } catch (ProcessExecutingException ex) { // from executor.execute()
             throw new TestingInternalServerErrorException("Program running error: " + ex);
@@ -128,15 +140,12 @@ public class ProgramTester {
             throw new TestingInternalServerErrorException(e.toString());
         } finally {
             try {
-                //if (executor.isRunning()) {
                 message = new StringBuffer(100);
                 try {
                     errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
                     String line;
-                    //System.err.println("Error output:");
                     while ((line = errorReader.readLine()) != null) {
-                        message.append(line+"\n");
-                        //System.err.println(line);
+                        message.append(line + "\n");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -151,8 +160,7 @@ public class ProgramTester {
                     processMessage(program);
                     throw new RunTimeErrorException(message.toString());
                 }
-                //}
-            } catch (ProcessNotRunningException e) { // from executor.waitForExit(); never
+            } catch (ProcessNotRunningException e) {
                 throw new TestingInternalServerErrorException(e.toString());
             } catch (InterruptedException e) {
                 throw new TestingInternalServerErrorException("Interrupted: " + e);

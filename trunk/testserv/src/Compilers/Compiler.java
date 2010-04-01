@@ -1,10 +1,6 @@
 package Compilers;
 
 import FileOperations.FileOperator;
-import java.io.*;
-import ProcessExecuting.*;
-import ProcessExecuting.Exceptions.*;
-// for test
 import Compilers.Exceptions.CompilationErrorException;
 import Compilers.Exceptions.CompilationInternalServerErrorException;
 import Compilers.Exceptions.CompilationTimeLimitExceededException;
@@ -18,6 +14,9 @@ import FileOperations.Exceptions.CanNotCreateTemporaryFileException;
 import FileOperations.Exceptions.CanNotWriteFileException;
 import InputGenerating.InputFromFileGenerator;
 import InputGenerating.InputGenerator;
+import ProcessExecuting.Exceptions.ProcessExecutingException;
+import ProcessExecuting.Exceptions.ProcessNotRunningException;
+import ProcessExecuting.ProcessExecutor;
 import Program.Program;
 import ProgramTesting.Exception.RunTimeErrorException;
 import ProgramTesting.Exception.TestingInternalServerErrorException;
@@ -26,6 +25,10 @@ import ProgramTesting.Exception.UnsuccessException;
 import ProgramTesting.ProgramTester;
 import Shared.Configuration;
 import Shared.ExitCodes;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -44,15 +47,18 @@ public class Compiler {
     private int lang;
 
     /**
+     * Конструктор принимает в качестве параметра код языка программирования.
+     * Затем этот код используется для взятия параметров конфигурации.
      *
-     * @param lang
+     * @param lang код языка программирования
      */
     public Compiler(int lang) {
         this.lang = lang;
     }
 
-    //public abstract String srcFileSuffix();
-    private InputStream getCompileInput(ProcessExecutor e) throws ProcessNotRunningException, CompilationInternalServerErrorException {
+    private InputStream getCompileInput(ProcessExecutor e) throws
+            ProcessNotRunningException,
+            CompilationInternalServerErrorException {
         int fd = Configuration.getOutputFileDescriptor(lang);
         switch (fd) {
             case 2:
@@ -65,13 +71,27 @@ public class Compiler {
     }
 
     /**
-     * Compiles the program. Creates temp file with program's source code.
-     * Runs compiler. If compilation is successfull, binary file is created.
-     * 
-     * @param program Program to compile.
-     * @throws CompilationErrorException
-     * @throws CompilationInternalServerErrorException
-     * @throws CompilationTimeLimitExceededException
+     * Метод запускает процесс компиляции программы @program.
+     * Программа должна быть не null.
+     * Перед вызовом этого метода должен быть вызван метод Program.prepare().
+     * Вывод компилятора - стандартный или вывод ошибок (соответствующие
+     * файловые дескрипторы - 1 и 2) - определяется используемым компилятором,
+     * читается из файла настроек.
+     * Время работы компилятора ограничивается значением TIME_LIMIT.
+     * Успешность компиляции определяется по наличию бинарного файла.
+     * Из сообщения компиляции имя файла с исходным кодом заменяется на слово
+     * &lt;code&gt;.
+     * Процессу компилятору передается в качестве рабочей директории директория,
+     * в которой находится файл с исходным кодом программы. В качестве параметра
+     * передается относительное имя файла с исходным кодом.
+     *
+     * @param program конкретная программа, должна быть не null, должен быть вызван
+     * метод Program.prepare()
+     * @throws CompilationErrorException ошибка компиляции
+     * @throws CompilationInternalServerErrorException в процессе компиляции
+     * на сервере произошла ошибка
+     * @throws CompilationTimeLimitExceededException процесс компиляции занял
+     * слишком много времени
      */
     public void compile(Program program) throws
             CompilationErrorException,
@@ -91,27 +111,32 @@ public class Compiler {
                 message.append(line + "\n");
             }
         } catch (IOException e) {
-            throw new CompilationInternalServerErrorException("Input/output error while compilation: " + e);
+            throw new CompilationInternalServerErrorException(
+                    "Input/output error while compilation: " + e);
         } catch (ProcessExecutingException e) {
-            throw new CompilationInternalServerErrorException("Compilation process running error: " + e);
+            throw new CompilationInternalServerErrorException(
+                    "Compilation process running error: " + e);
         } finally {
             try {
-//                if (executor.isRunning()) {
                 int code = executor.waitForExit();
-                System.err.println("Compilation process exited with code " + code);
-                System.err.println("Compilation process was run for " + executor.getWorkTime());
+                System.err.println(
+                        "Compilation process exited with code " + code);
+                System.err.println(
+                        "Compilation process was run for " + executor.getWorkTime());
                 if (executor.isOutOfTime()) {
-                    throw new CompilationTimeLimitExceededException("Compilation process is out of time");
+                    throw new CompilationTimeLimitExceededException(
+                            "Compilation process is out of time");
                 }
                 if (!program.canExecute()) {
                     processMessage(program);
                     throw new CompilationErrorException(message.toString());
                 }
-                //              }
             } catch (InterruptedException e) {
-                throw new CompilationInternalServerErrorException("Interrupted: " + e);
+                throw new CompilationInternalServerErrorException(
+                        "Interrupted: " + e);
             } catch (ProcessNotRunningException e) {
-                throw new CompilationInternalServerErrorException("Compilation process is not running: " + e);
+                throw new CompilationInternalServerErrorException(
+                        "Compilation process is not running: " + e);
             } finally {
                 FileOperator.close(reader);
             }
@@ -122,14 +147,19 @@ public class Compiler {
         int index;
         index = message.indexOf(p.getSrcFileName());
         while (index > -1) {
-            message = message.replace(index, index + p.getSrcFileName().length(), "&lt;code&gt;");
+            message = message.replace(
+                    index, index + p.getSrcFileName().length(), "&lt;code&gt;");
             index = message.indexOf(p.getSrcFileName());
         }
     }
 
     /**
+     * Для запуска тестирования класса компилятора Compiler необходимо
+     * запустить сервер баз данных MySQL, с базой данных Moodle, с
+     * установеленным модулем problemstatement, с задачами и тестами, а также
+     * необходим файл конфигурации testserv.cfg.xml.
      *
-     * @param argv
+     * @param argv аргументы командной строки
      */
     @SuppressWarnings("static-access")
     public static void main(String argv[]) {
@@ -137,21 +167,20 @@ public class Compiler {
             System.err.println("Configuration file not found or parse error");
             return;
         }
-        String url = "jdbc:mysql://localhost/moodle",
-                user = "moodleuser",
-                password = "moo";
         Connection connection = null;
         Program p = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(Configuration.getURL(),
+                    Configuration.getUser(), Configuration.getPassword());
             connection.setTransactionIsolation(connection.TRANSACTION_READ_COMMITTED);
-            System.out.println("URL: " + url);
+            System.out.println("URL: " + Configuration.getURL());
             System.out.println("Connection: " + connection);
             //Content.loadAll(connection);
             Problems.connection = connection;
             //p = new Program(0, "#include <stdio.h>\n"+
-            //  "main() {sdf printf(\"hello world\"); return 0; }\n", Problems.getInstance().getProblemById(1));
+            //  "main() {sdf printf(\"hello world\"); return 0; }\n",
+            //  Problems.getInstance().getProblemById(1));
             p = new Program(1, "const nmax=1000;\n" +
                     "var mass:array[1..nmax]of integer;\n" +
                     "i,j,m,n:integer;\n" +
@@ -215,6 +244,7 @@ public class Compiler {
             System.err.println("Failed tests: " + e.getMessage());
         } catch (RunTimeErrorException e) {
             System.err.println(ExitCodes.getMsg(ExitCodes.RUNTIME_ERROR));
+            System.err.println(e.getMessage());
             System.err.println("Failed tests: " + e.getMessage());
         } finally {
             if (p != null) {
