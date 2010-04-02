@@ -1,6 +1,3 @@
-/*
- * test
- */
 package ProgramTesting;
 
 import ProgramTesting.Exceptions.UnsuccessException;
@@ -63,6 +60,9 @@ public class ProgramTester {
      * defined.
      *
      * TODO memory
+     * TODO run time error в конфиг - отображать или нет... нет, в вебинтерфейсе?
+     * TODO но ведь для паскаля и С нет смысла в рантайм ошибках
+     * TODO java компилятор - интерпретатор
      *
      * @param program Program to execute.
      * @throws UnsuccessException
@@ -75,7 +75,7 @@ public class ProgramTester {
             TestingInternalServerErrorException,
             RunTimeErrorException,
             TestingTimeLimitExceededException {
-        if (program.canExecute()) {
+        //if (program.canExecute()) {
             if (program.problem != null && program.problem.n > 0) {
                 // executing and testing the program
                 for (int i = 0; i < program.problem.n; ++i) { // testing the program test by test...
@@ -84,9 +84,9 @@ public class ProgramTester {
             } else {
                 throw new TestingInternalServerErrorException("System tests not found");
             }
-        } else {
-            throw new TestingInternalServerErrorException("Binary file doesn't exist");
-        }
+        //} else {
+        //    throw new TestingInternalServerErrorException("Binary file doesn't exist");
+        //}
     }
 
     private void processMessage(Program p) {
