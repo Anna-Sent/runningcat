@@ -1,9 +1,10 @@
 /*
+ * test
  */
 package ProgramTesting;
 
-import ProgramTesting.Exception.UnsuccessException;
-import ProgramTesting.Exception.RunTimeErrorException;
+import ProgramTesting.Exceptions.UnsuccessException;
+import ProgramTesting.Exceptions.RunTimeErrorException;
 import Program.Program;
 import DataProcessing.Exceptions.ComparisonFailedException;
 import DataProcessing.Exceptions.InputTestReadException;
@@ -18,8 +19,8 @@ import InputGenerating.InputGenerator;
 import ProcessExecuting.Exceptions.ProcessExecutingException;
 import ProcessExecuting.ProcessExecutor;
 import ProcessExecuting.Exceptions.ProcessNotRunningException;
-import ProgramTesting.Exception.TestingInternalServerErrorException;
-import ProgramTesting.Exception.TestingTimeLimitExceededException;
+import ProgramTesting.Exceptions.TestingInternalServerErrorException;
+import ProgramTesting.Exceptions.TestingTimeLimitExceededException;
 import Shared.ExitCodes;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
