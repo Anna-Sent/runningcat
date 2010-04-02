@@ -18,10 +18,10 @@ import ProcessExecuting.Exceptions.ProcessExecutingException;
 import ProcessExecuting.Exceptions.ProcessNotRunningException;
 import ProcessExecuting.ProcessExecutor;
 import Program.Program;
-import ProgramTesting.Exception.RunTimeErrorException;
-import ProgramTesting.Exception.TestingInternalServerErrorException;
-import ProgramTesting.Exception.TestingTimeLimitExceededException;
-import ProgramTesting.Exception.UnsuccessException;
+import ProgramTesting.Exceptions.RunTimeErrorException;
+import ProgramTesting.Exceptions.TestingInternalServerErrorException;
+import ProgramTesting.Exceptions.TestingTimeLimitExceededException;
+import ProgramTesting.Exceptions.UnsuccessException;
 import ProgramTesting.ProgramTester;
 import Shared.Configuration;
 import Shared.ExitCodes;
@@ -71,7 +71,7 @@ public class Compiler {
     }
 
     /**
-     * Метод запускает процесс компиляции программы @program.
+     * Метод запускает процесс компиляции программы program.
      * Программа должна быть не null.
      * Перед вызовом этого метода должен быть вызван метод Program.prepare().
      * Вывод компилятора - стандартный или вывод ошибок (соответствующие

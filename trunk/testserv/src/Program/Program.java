@@ -41,10 +41,18 @@ public class Program {
     }
 
     /**
+     * Создает временную директорию, куда складываются все необходимые файлы:
+     * 1) сначала файл с исходным кодом, 2) после компиляции бинарный файл,
+     * объектные и другие временные файлы.
+     * Инициализируются переменные dirPath, srcPath, binPath.
      *
-     * @throws CanNotCreateTemporaryDirectoryException
-     * @throws CanNotCreateTemporaryFileException
-     * @throws CanNotWriteFileException
+     * @throws CanNotCreateTemporaryDirectoryException ошибка при создании
+     * временной директории (может возникнуть, например, при отсутствии прав на
+     * запись)
+     * @throws CanNotCreateTemporaryFileException ошибка при создании файла с
+     * исходным кодом
+     * @throws CanNotWriteFileException ошибка при попытке записи в файл,
+     * подготовленный для исходного кода
      */
     public void prepare() throws CanNotCreateTemporaryDirectoryException, CanNotCreateTemporaryFileException, CanNotWriteFileException {
         dirPath = FileOperator.createDirectory("tmpdir", "solution", Configuration.getTmpDir());
@@ -56,7 +64,7 @@ public class Program {
     }
 
     /**
-     *
+     * Метод необходимо вызывать после prepare() для удаления временной директории.
      */
     public void close() {
         if (dirPath.compareTo("") != 0 && (new File(dirPath)).exists()) {
@@ -65,16 +73,14 @@ public class Program {
     }
 
     /**
+     * Метод стоит вызывать после компиляции программы.
      *
-     * @return
+     * @return возвращает true, если бинарный файл существует, false - в
+     * противном случае
      */
     public boolean canExecute() {
-        if (getBinPath() != null) {
             File executable = new File(getBinPath());
-            return executable.exists() /*&& executable.canExecute()*/;
-        } else {
-            return true;
-        }
+            return executable.exists();
     }
 
     private String[] getCmd(String[] cmd) {
@@ -101,32 +107,45 @@ public class Program {
     }
 
     /**
+     * Метод возвращает команду с параметрами для исполнения программы.
      *
-     * @return
+     * @return возвращает массив строк - команду и параметры для выполнения
+     * программы
      */
     public String[] getExecuteCmd() {
         return getCmd(Configuration.getExecuteCommand(lang));
     }
 
     /**
+     * Метод возвращает команду с параметрами для компиляции программы.
      *
-     * @return
+     * @return возвращает массив строк - команду и параметры для компиляции
+     * программы
      */
     public String[] getCompileCmd() {
         return getCmd(Configuration.getCompilerCommand(lang));
     }
 
     /**
+     * Метод возвращает путь к исполняемому (бинарному) файлу с программой.
+     * Метод стоит вызывать после prepare(). Файл будет существовать в случае
+     * удачной компиляции программы.
      *
-     * @return
+     * @return возвращает строку - путь к исполняемому (бинарному) файлу с
+     * программой
      */
     public String getBinPath() {
         return binPath;
     }
 
     /**
+     * Метод возвращает имя исполняемого (бинарного) файла с программой.
+     * Стоит вызывать после prepare(). Файл будет существовать в случае удачной
+     * компиляции программы. Метод используется для генерации команды для
+     * выполнения программы.
      *
-     * @return
+     * @return возвращает строку - имя исполняемого (бинарного) файла с
+     * программой
      */
     public String getBinFileName() {
         return binPath != null ? (new File(binPath)).getName() : null;

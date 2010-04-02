@@ -2,4 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/profiler/1" version="0.9.1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/Compilers/Compiler.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/Compilers/Exceptions/CompilationErrorException.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/Compilers/Exceptions/CompilationInternalServerErrorException.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/Compilers/Exceptions/CompilationTimeLimitExceededException.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/testserv/SubmissionProcessor.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/ProgramTesting/ProgramTester.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/DataProcessing/SimpleOutputDataProcessor.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/FileOperations/FileOperator.java</file>
+        <file>file:/home/partizanka/programming/netbeans/testserv/src/DataProcessing/DataProcessor.java</file>
+    </open-files>
 </project-private>
