@@ -1,6 +1,6 @@
 /*
  */
-package ProgramTesting.Exception;
+package ProgramTesting.Exceptions;
 
 /**
  *
