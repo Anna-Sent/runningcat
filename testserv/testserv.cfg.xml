@@ -15,43 +15,76 @@
 			tmp="/tmp"
 			tests="workDir/tests"
 		></pathes>
-		<compiler
-			lang="Pascal/Delphi"
+		<language
+			name="Pascal/Delphi (FPC)"
 			id="1"
-			compile_output_file_descriptor="1"
 			src_prefix="temp"
-			src_suffix=".pas"
-			bin_suffix=""
-			compile_cmd="fpc,-Mdelphi,{src_file}"
-			execute_cmd="{bin_path}"
-		></compiler>
-		<compiler
-			lang="C/C++"
+			src_suffix=".pas">
+			<compile
+				compile_output_file_descriptor="1"
+				bin_suffix=""
+				compile_cmd="fpc,-Ciort,-Mdelphi,{src_file}">
+			</compile>
+			<execute
+				run_time_output_file_descriptor="1"
+				execute_cmd="{bin_path}">
+			</execute>
+		</language>
+		<language
+			name="C/C++"
 			id="0"
-			compile_output_file_descriptor="2"
 			src_prefix="temp"
-			src_suffix=".cpp"
-			bin_suffix=""
-			compile_cmd="g++,-o,{bin_file},{src_file}"
-			execute_cmd="{bin_path}"
-		></compiler>
-		<compiler
-			lang="Java"
+			src_suffix=".cpp">
+			<compile
+				compile_output_file_descriptor="2"
+				bin_suffix=""
+				compile_cmd="g++,-o,{bin_file},{src_file}">
+			</compile>
+			<execute
+				run_time_output_file_descriptor="2"
+				execute_cmd="{bin_path}">
+			</execute>
+		</language>
+		<language
+			name="Java"
 			id="2"
-			compile_output_file_descriptor="2"
 			src_prefix="Main"
-			src_suffix=".java"
-			bin_suffix=".class"
-			compile_cmd="javac,{src_file}"
-			execute_cmd="java,{src_prefix}"
-		></compiler>
-		<compiler
-			lang="Python"
+			src_suffix=".java">
+			<compile
+				compile_output_file_descriptor="2"
+				bin_suffix=".class"
+				compile_cmd="javac,{src_file}">
+			</compile>
+			<execute
+				run_time_output_file_descriptor="2"
+				execute_cmd="java,{src_prefix}">
+			</execute>
+		</language>
+		<language
+			name="Python"
 			id="3"
 			src_prefix="temp"
-			src_suffix=".py"
-			execute_cmd="python,{src_file}"
-		></compiler>
+			src_suffix=".py">
+			<execute
+				run_time_output_file_descriptor="2"
+				execute_cmd="python,{src_file}">
+			</execute>
+		</language>
+		<language
+			name="C# (Mono)"
+			id="4"
+			src_prefix="temp"
+			src_suffix=".cs">
+			<compile
+				compile_output_file_descriptor="2"
+				bin_suffix=".exe"
+				compile_cmd="mcs,{src_file}">
+			</compile>
+			<execute
+				run_time_output_file_descriptor="2"
+				execute_cmd="mono,{bin_file}">
+			</execute>
+		</language>
 	</platform>
 	<platform os="Windows XP">
 		<pathes
@@ -59,7 +92,7 @@
 			tests="workDir/tests"
 		></pathes>
 		<language
-			name="Pascal/Delphi"
+			name="Pascal/Delphi (FPC)"
 			id="1"
 			src_prefix="temp"
 			src_suffix=".pas">
