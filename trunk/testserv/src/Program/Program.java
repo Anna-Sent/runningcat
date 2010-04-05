@@ -57,7 +57,7 @@ public class Program {
     public void prepare() throws CanNotCreateTemporaryDirectoryException, CanNotCreateTemporaryFileException, CanNotWriteFileException {
         dirPath = FileOperator.createDirectory("tmpdir", "solution", Configuration.getTmpDir());
         srcPath = FileOperator.createFile(Configuration.getSourcePrefix(lang), Configuration.getSourceSuffix(lang), dirPath);
-        if (Configuration.getBinarySuffix(lang) != null) {
+        if (Configuration.isCompiled(lang)) {
             binPath = srcPath.replace(Configuration.getSourceSuffix(lang), Configuration.getBinarySuffix(lang));
         }
         FileOperator.writeFile(srcPath, text);
@@ -132,7 +132,8 @@ public class Program {
      * удачной компиляции программы.
      *
      * @return возвращает строку - путь к исполняемому (бинарному) файлу с
-     * программой
+     * программой; null - в случае, если программа написана на интерпретируемом
+     * языке
      */
     public String getBinPath() {
         return binPath;
@@ -145,7 +146,8 @@ public class Program {
      * выполнения программы.
      *
      * @return возвращает строку - имя исполняемого (бинарного) файла с
-     * программой
+     * программой; null - в случае, если программа написана на интерпретируемом
+     * языке
      */
     public String getBinFileName() {
         return binPath != null ? (new File(binPath)).getName() : null;
