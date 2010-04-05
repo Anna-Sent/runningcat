@@ -67,8 +67,8 @@ public class SubmissionProcessor {
             langsstr += ("'" + langs[i] + "'" + ((i < langs.length - 1) ? "," : ""));
             //System.err.println(langs[i]);
         }
-        condition = "submission.processed='" + NOT_PROCESSED + "' and " +
-                "submission.langid in (" + langsstr + ")";
+        condition = "submission.processed='" + NOT_PROCESSED + "' and "
+                + "submission.langid in (" + langsstr + ")";
     }
 
     private boolean fillData(ResultSet rs) {
@@ -254,10 +254,10 @@ public class SubmissionProcessor {
                     "problemstatement.problem_id",
                     "user.lastname",
                     "user.firstname"},
-                "mdl_problemstatement_submissions submission " +
-                "join mdl_problemstatement problemstatement on (submission.problemstatement=problemstatement.id) " +
-                "join mdl_problemstatement_problem problem on (problemstatement.problem_id=problem.id) " +
-                "join mdl_user user on (user.id=submission.userid) ",
+                "mdl_problemstatement_submissions submission "
+                + "join mdl_problemstatement problemstatement on (submission.problemstatement=problemstatement.id) "
+                + "join mdl_problemstatement_problem problem on (problemstatement.problem_id=problem.id) "
+                + "join mdl_user user on (user.id=submission.userid) ",
                 condition)); // get correct compilers
     }
 
@@ -291,12 +291,12 @@ public class SubmissionProcessor {
             com = com.replace("'", "\\'");
             er = er.replace("'", "\\'");
             statement = connection.createStatement();
-            statement.executeUpdate("update mdl_problemstatement_submissions " +
-                    "set processed='" + PROCESSED + "', " +
-                    "submissioncomment='" + com + "', " +
-                    "errormessage='" + er + "', " +
-                    "succeeded='" + res + "' " +
-                    "where id=" + submissionId + ";");
+            statement.executeUpdate("update mdl_problemstatement_submissions "
+                    + "set processed='" + PROCESSED + "', "
+                    + "submissioncomment='" + com + "', "
+                    + "errormessage='" + er + "', "
+                    + "succeeded='" + res + "' "
+                    + "where id=" + submissionId + ";");
             return true;
         } catch (SQLException e) {
             comment.append(ExitCodes.getMsg(ExitCodes.INTERNAL_ERROR));

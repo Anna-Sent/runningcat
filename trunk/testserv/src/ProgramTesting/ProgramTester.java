@@ -76,14 +76,14 @@ public class ProgramTester {
             RunTimeErrorException,
             TestingTimeLimitExceededException {
         //if (program.canExecute()) {
-            if (program.problem != null && program.problem.n > 0) {
-                // executing and testing the program
-                for (int i = 0; i < program.problem.n; ++i) { // testing the program test by test...
-                    testProgram(program, i);
-                }
-            } else {
-                throw new TestingInternalServerErrorException("System tests not found");
+        if (program.problem != null && program.problem.n > 0) {
+            // executing and testing the program
+            for (int i = 0; i < program.problem.n; ++i) { // testing the program test by test...
+                testProgram(program, i);
             }
+        } else {
+            throw new TestingInternalServerErrorException("System tests not found");
+        }
         //} else {
         //    throw new TestingInternalServerErrorException("Binary file doesn't exist");
         //}

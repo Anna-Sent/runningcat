@@ -181,23 +181,23 @@ public class Compiler {
             //p = new Program(0, "#include <stdio.h>\n"+
             //  "main() {sdf printf(\"hello world\"); return 0; }\n",
             //  Problems.getInstance().getProblemById(1));
-            p = new Program(1, "const nmax=1000;\n" +
-                    "var mass:array[1..nmax]of integer;\n" +
-                    "i,j,m,n:integer;\n" +
-                    "begin\n" +
-                    "read(n,m);\n" +
-                    "for i:=1 to n do\n" +
-                    "mass[i]:=i;\n" +
-                    "i:=1;\n" +
-                    "while n>1 do begin\n" +
-                    "i:=(i+m-1) mod n;\n" +
-                    "if i=0 then i:=n;\n" +
-                    "for j:=i to n-1 do\n" +
-                    "mass[j]:=mass[j+1];\n" +
-                    "n:=n-1;\n" +
-                    "end;\n" +
-                    "writeln(mass[1]);\n" +
-                    "end.\n"/*"var a: ^Integer; begin new(a);dispose(a);dispose(a);end."*/, Problems.getInstance().getProblemById(6));
+            p = new Program(1, "const nmax=1000;\n"
+                    + "var mass:array[1..nmax]of integer;\n"
+                    + "i,j,m,n:integer;\n"
+                    + "begin\n"
+                    + "read(n,m);\n"
+                    + "for i:=1 to n do\n"
+                    + "mass[i]:=i;\n"
+                    + "i:=1;\n"
+                    + "while n>1 do begin\n"
+                    + "i:=(i+m-1) mod n;\n"
+                    + "if i=0 then i:=n;\n"
+                    + "for j:=i to n-1 do\n"
+                    + "mass[j]:=mass[j+1];\n"
+                    + "n:=n-1;\n"
+                    + "end;\n"
+                    + "writeln(mass[1]);\n"
+                    + "end.\n"/*"var a: ^Integer; begin new(a);dispose(a);dispose(a);end."*/, Problems.getInstance().getProblemById(6));
             p.prepare();
             Compiler c = CompilerFactory.getInstance().getCompiler(p.lang);
             c.compile(p);
