@@ -79,8 +79,8 @@ public class Program {
      * противном случае
      */
     public boolean canExecute() {
-            File executable = new File(getBinPath());
-            return executable.exists();
+        File executable = new File(getBinPath());
+        return executable.exists();
     }
 
     private String[] getCmd(String[] cmd) {

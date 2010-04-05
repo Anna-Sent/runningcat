@@ -11,8 +11,8 @@ import java.sql.*;
 public class Executor {
 
     //private final String url = "jdbc:mysql://localhost/moodle",
-      //      user = "moodleuser",
-        //    password = "moo";
+    //      user = "moodleuser",
+    //    password = "moo";
     private boolean isRunning = false;
     private Connection connection = null;
     private final long timeout = 2000; // ms
