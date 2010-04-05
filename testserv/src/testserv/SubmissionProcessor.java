@@ -131,7 +131,7 @@ public class SubmissionProcessor {
 
     private boolean compileProgram(Program p) {
         try {
-            if (p.lang == 3) {
+            if (!Configuration.isCompiled(p.lang)) {
                 return true;
             }
             Compiler c = CompilerFactory.getInstance().getCompiler(p.lang);
