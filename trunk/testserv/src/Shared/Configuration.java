@@ -24,7 +24,6 @@ class ConfigurationErrorException extends Exception {
     public ConfigurationErrorException(String msg) {
         super(msg);
     }
-
 }
 
 class Language {
