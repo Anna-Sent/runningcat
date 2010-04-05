@@ -236,7 +236,7 @@ class problemstatement {
         }
 	if ($editmode) {
 	echo '
-<script language="javascript" type="text/javascript" src="/editarea/edit_area/edit_area_compressor.php?plugins"></script>
+<script language="javascript" type="text/javascript" src="editarea/edit_area/edit_area_compressor.php?plugins"></script>
 <script language="javascript" type="text/javascript">
 var _onload=null;
 
