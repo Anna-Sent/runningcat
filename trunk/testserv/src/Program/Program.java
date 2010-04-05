@@ -87,19 +87,19 @@ public class Program {
         if (cmd != null) {
             for (int i = 0; i < cmd.length; ++i) {
                 if (getSrcFileName() != null) {
-                    cmd[i] = cmd[i].replace("<src_file>", getSrcFileName());
+                    cmd[i] = cmd[i].replace("{src_file}", getSrcFileName());
                 }
                 if (getSrcPath() != null) {
-                    cmd[i] = cmd[i].replace("<src_path>", getSrcPath());
+                    cmd[i] = cmd[i].replace("{src_path}", getSrcPath());
                 }
                 if (getBinFileName() != null) {
-                    cmd[i] = cmd[i].replace("<bin_file>", getBinFileName());
+                    cmd[i] = cmd[i].replace("{bin_file}", getBinFileName());
                 }
                 if (getBinPath() != null) {
-                    cmd[i] = cmd[i].replace("<bin_path>", getBinPath());
+                    cmd[i] = cmd[i].replace("{bin_path}", getBinPath());
                 }
                 if (Configuration.getSourcePrefix(lang) != null) {
-                    cmd[i] = cmd[i].replace("<src_prefix>", Configuration.getSourcePrefix(lang));
+                    cmd[i] = cmd[i].replace("{src_prefix}", Configuration.getSourcePrefix(lang));
                 }
             }
         }

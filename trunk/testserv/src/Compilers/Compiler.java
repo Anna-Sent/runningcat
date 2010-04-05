@@ -59,7 +59,7 @@ public class Compiler {
     private InputStream getCompileInput(ProcessExecutor e) throws
             ProcessNotRunningException,
             CompilationInternalServerErrorException {
-        int fd = Configuration.getOutputFileDescriptor(lang);
+        int fd = Configuration.getCompileOutputFileDescriptor(lang);
         switch (fd) {
             case 2:
                 return e.getErrorStream();
