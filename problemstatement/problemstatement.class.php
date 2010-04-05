@@ -1,6 +1,6 @@
 <?php
 require_once($CFG->libdir.'/formslib.php');
-require_once($CFG->geshi);
+require_once('geshi/geshi.php');
 error_reporting(E_ALL);
 //<script src="jquery-1.3.2.min.js" type="text/javascript">
 
@@ -11,13 +11,19 @@ error_reporting(E_ALL);
 }*/
 
 function highlight_syntax($code, $langid) {
-	$syntax='';
+	$value = get_record('problemstatement_programming_language','id',$langid);
+	if ($value)
+		$syntax = $value->geshi;
+	else
+		$syntax = '';
+/*
 	switch ($langid) {
 		case '0': $syntax='cpp'; break;
 		case '1': $syntax='delphi'; break;
 		case '2': $syntax='java'; break;
 		case '3': $syntax='python'; break;
-	}
+		case '4': $syntax='csharp'; break;
+	}*/
     $geshi = new GeSHi($code, $syntax);
     $geshi->set_header_type(GESHI_HEADER_DIV);
 
@@ -50,7 +56,10 @@ $linenumbers=1;
       $parsed = preg_replace('/<\/div>$/','</span>', $parsed);
     }
 //return $geshi->parse_code().$syntax;
-	$comment=get_string("programwritten", "problemstatement").get_string("lang_".$langid, "problemstatement");
+	$lang = get_record('problemstatement_programming_language','id',$langid);
+	if (!$lang)
+		$lang = '';
+	$comment=get_string("programwritten", "problemstatement").$lang->language_name; //get_string("lang_".$langid, "problemstatement");
   return $parsed.$comment;
 }
 
@@ -239,7 +248,8 @@ function change_style(sender)
 	if (val=="1") lang="pas"; else
 	if (val=="0") lang="cpp"; else
 	if (val=="2") lang="java"; else
-	if (val=="3") lang="python";
+	if (val=="3") lang="python"; else
+	if (val=="4") lang="cpp"
 	editAreaLoader.execCommand(\'id_programtext\',"change_syntax",lang);
 	return lang;
 };
@@ -2254,15 +2264,15 @@ shorten_text(trim(strip_tags(format_text($auser->submissioncomment,0))), 15),
         $typestr = get_string('type'.$this->type, 'problemstatement');
 
         if (!empty($data->reset_problemstatement_submissions)) {
-            $problemstatementssql = "SELECT a.id
-                                 FROM {$CFG->prefix}problemstatement a
-                                WHERE a.course={$data->courseid} AND a.problemstatementtype='{$this->type}'";
+            $problemstatementssql = "select a.id
+                                 from {$cfg->prefix}problemstatement a
+                                where a.course={$data->courseid} and a.problemstatementtype='{$this->type}'";
 
-            delete_records_select('problemstatement_submissions', "problemstatement IN ($problemstatementssql)");
+            delete_records_select('problemstatement_submissions', "problemstatement in ($problemstatementssql)");
 
             if ($problemstatements = get_records_sql($problemstatementssql)) {
                 foreach ($problemstatements as $problemstatementid=>$unused) {
-                    fulldelete($CFG->dataroot.'/'.$data->courseid.'/moddata/problemstatement/'.$problemstatementid);
+                    fulldelete($cfg->dataroot.'/'.$data->courseid.'/moddata/problemstatement/'.$problemstatementid);
                 }
             }
 
@@ -2286,13 +2296,23 @@ shorten_text(trim(strip_tags(format_text($auser->submissioncomment,0))), 15),
 
 class mod_problemstatement_online_edit_form extends moodleform {
     function definition() {
+        global $CFG;
+
         $mform =& $this->_form;
 
-        // visible elements
-        $langs = array( 0 => get_string("lang_0", 'problemstatement'),
-		1 => get_string("lang_1", 'problemstatement'),
-		2 => get_string("lang_2", 'problemstatement'),
-		3 => get_string("lang_3", 'problemstatement'));
+	// visible elements
+	$langs = array();
+	$sql = "select id,language_name from {$CFG->prefix}problemstatement_programming_language";
+	if ($records = get_records_sql($sql)) {
+		foreach ($records as $index=>$value) {
+			$langs[$value->id] = $value->language_name;
+		}
+	}
+
+//        $langs = array( 0 => get_string("lang_0", 'problemstatement'),
+//		1 => get_string("lang_1", 'problemstatement'),
+//		2 => get_string("lang_2", 'problemstatement'),
+//		3 => get_string("lang_3", 'problemstatement'));
         $mform->addElement('select', 'langid', get_string('language', 'problemstatement'), $langs);
         $mform->setDefault('langid', 1);
         //$mform->addRule('langid', get_string('required'), 'required', null, 'client');
