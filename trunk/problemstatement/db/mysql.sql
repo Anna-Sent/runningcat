@@ -70,10 +70,13 @@ CREATE TABLE `mdl_problemstatement_problem_solution` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `mdl_problemstatement_programming_language` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `language_name` varchar(30) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `language_name` varchar(30) DEFAULT NULL,
+  `geshi` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+INSERT INTO `mdl_problemstatement_programming_language` VALUES (0,'C/C++','cpp'),(1,'Pascal/Delphi (FPC)','delphi'),(2,'Java','java'),(3,'Python','python'),(4,'C# (Mono)','csharp');
 
 CREATE TABLE `mdl_problemstatement_solution` (
   `id` int(10) unsigned NOT NULL auto_increment,
