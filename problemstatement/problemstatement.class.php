@@ -2302,7 +2302,7 @@ class mod_problemstatement_online_edit_form extends moodleform {
 
 	// visible elements
 	$langs = array();
-	$sql = "select id,language_name from {$CFG->prefix}problemstatement_programming_language";
+	$sql = "select id,language_name from {$CFG->prefix}problemstatement_programming_language order by id";
 	if ($records = get_records_sql($sql)) {
 		foreach ($records as $index=>$value) {
 			$langs[$value->id] = $value->language_name;
