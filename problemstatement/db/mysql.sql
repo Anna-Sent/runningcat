@@ -76,7 +76,20 @@ CREATE TABLE `mdl_problemstatement_programming_language` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-INSERT INTO `mdl_problemstatement_programming_language` VALUES (0,'C/C++','cpp'),(1,'Pascal/Delphi (FPC)','delphi'),(2,'Java','java'),(3,'Python','python'),(4,'C# (Mono)','csharp');
+INSERT INTO mdl_problemstatement_programming_language(id, language_name, geshi)
+VALUES (0,'C/C++','cpp');
+
+INSERT INTO mdl_problemstatement_programming_language(id, language_name, geshi)
+VALUES (1,'Pascal/Delphi (FPC)','delphi');
+
+INSERT INTO mdl_problemstatement_programming_language(id, language_name, geshi)
+VALUES (2,'Java','java');
+
+INSERT INTO mdl_problemstatement_programming_language(id, language_name, geshi)
+VALUES (3,'Python','python');
+
+INSERT INTO mdl_problemstatement_programming_language(id, language_name, geshi)
+VALUES (4,'C# (Mono)','csharp');
 
 CREATE TABLE `mdl_problemstatement_solution` (
   `id` int(10) unsigned NOT NULL auto_increment,
