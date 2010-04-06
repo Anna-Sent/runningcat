@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -104,42 +106,45 @@ public class Compiler {
                 TIME_LIMIT);
         BufferedReader reader = null;
         try {
-            executor.execute();
-            reader = new BufferedReader(new InputStreamReader(getCompileInput(executor)));
+            executor.execute(); // throws ProcessExecutingException
+            reader = new BufferedReader(
+                    new InputStreamReader(
+                    getCompileInput(executor))); // throws ProcessExecutingException
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) { // throws IOException
                 message.append(line + "\n");
             }
+            int code = executor.waitForExit(); // throws ProcessExecutingException, InterruptedException
+            System.err.println("Compilation process exited with code " + code);
+            System.err.println("Compilation process was run for " + executor.getWorkTime());
+            if (executor.isOutOfTime()) {
+                throw new CompilationTimeLimitExceededException(
+                        "Compilation process is out of time");
+            }
+            if (!program.canExecute()) {
+                processMessage(program);
+                throw new CompilationErrorException(message.toString());
+            }
         } catch (IOException e) {
+            try {
+                int code = executor.waitForExit(); // throws ProcessExecutingException, InterruptedException
+                System.err.println("Compilation process exited with code " + code);
+                System.err.println("Compilation process was run for " + executor.getWorkTime());
+            } catch (ProcessNotRunningException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             throw new CompilationInternalServerErrorException(
                     "Input/output error while compilation: " + e);
         } catch (ProcessExecutingException e) {
             throw new CompilationInternalServerErrorException(
                     "Compilation process running error: " + e);
+        } catch (InterruptedException e) {
+            throw new CompilationInternalServerErrorException(
+                    "Interrupted: " + e);
         } finally {
-            try {
-                int code = executor.waitForExit();
-                System.err.println(
-                        "Compilation process exited with code " + code);
-                System.err.println(
-                        "Compilation process was run for " + executor.getWorkTime());
-                if (executor.isOutOfTime()) {
-                    throw new CompilationTimeLimitExceededException(
-                            "Compilation process is out of time");
-                }
-                if (!program.canExecute()) {
-                    processMessage(program);
-                    throw new CompilationErrorException(message.toString());
-                }
-            } catch (InterruptedException e) {
-                throw new CompilationInternalServerErrorException(
-                        "Interrupted: " + e);
-            } catch (ProcessNotRunningException e) {
-                throw new CompilationInternalServerErrorException(
-                        "Compilation process is not running: " + e);
-            } finally {
-                FileOperator.close(reader);
-            }
+            FileOperator.close(reader);
         }
     }
 
