@@ -154,7 +154,7 @@
 			<compile
 				compile_output_file_descriptor="2"
 				bin_suffix=".exe"
-				compile_cmd="mcs,{src_file}">
+				compile_cmd="mcs.bat,{src_file}">
 			</compile>
 			<execute
 				run_time_output_file_descriptor="2"
