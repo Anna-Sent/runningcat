@@ -8,9 +8,11 @@ import DataProcessing.Exceptions.InputTestReadException;
 import DataProcessing.Exceptions.InputWriteException;
 import DataProcessing.Exceptions.OutputReadException;
 import DataProcessing.Exceptions.OutputTestReadException;
+import DataProcessing.Exceptions.TestReadException;
 import DataProcessing.InputDataProcessor;
 import DataProcessing.OutputDataProcessor;
 import FileOperations.FileOperator;
+import IOGenerating.Exceptions.IOGeneratingException;
 import IOGenerating.Exceptions.InputGeneratingException;
 import IOGenerating.Exceptions.OutputGeneratingException;
 import IOGenerating.InputGenerator;
@@ -48,6 +50,7 @@ public class ProgramTester {
     /**
      *
      * @param inputGenerator
+     * @param outputGenerator 
      * @param inputDataProcessor
      * @param outputDataProcessor
      */
@@ -66,9 +69,6 @@ public class ProgramTester {
      * defined.
      *
      * TODO memory
-     * TODO run time error в конфиг - отображать или нет... нет, в вебинтерфейсе?
-     * TODO но ведь для паскаля и С нет смысла в рантайм ошибках
-     * TODO java компилятор - интерпретатор
      *
      * @param program Program to execute.
      * @throws UnsuccessException
@@ -117,20 +117,24 @@ public class ProgramTester {
         ProcessExecutor executor = new ProcessExecutor(program.getExecuteCmd(), program.getDirPath(), 3000);
         try {
             executor.execute();
+            try {
+                inputWriter = new BufferedWriter(
+                        new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
+                testInputReader = new BufferedReader(
+                        inputGenerator.getReader(testNumber));
+                inputDataProcessor.process(inputWriter, testInputReader);
 
-            inputWriter = new BufferedWriter(
-                    new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
-            testInputReader = new BufferedReader(
-                    inputGenerator.getReader(testNumber));
-            inputDataProcessor.process(inputWriter, testInputReader);
-
-            outputReader = new BufferedReader(
-                    new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
-            testOutputReader = new BufferedReader(
-                    outputGenerator.getReader(testNumber));
-            outputDataProcessor.process(outputReader, testOutputReader);
-
-
+                outputReader = new BufferedReader(
+                        new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
+                testOutputReader = new BufferedReader(
+                        outputGenerator.getReader(testNumber));
+                outputDataProcessor.process(outputReader, testOutputReader);
+            } catch (InputWriteException e) {
+                // Если не работает запись на вход программы или чтение выхода
+                // программы, то произошла ошибка времени выполнения.
+            } catch (OutputReadException e) {
+                // throw new RunTimeErrorException(e.toString());
+            }
             if (Configuration.getRunTimeOutputDescriptor(program.lang) == 2) {
                 message = new StringBuffer();
                 try {
@@ -157,29 +161,22 @@ public class ProgramTester {
                 processMessage(program);
                 throw new RunTimeErrorException(message.toString());
             }
-
         } catch (ProcessExecutingException ex) { // from executor.execute()
             throw new TestingInternalServerErrorException("Program running error: " + ex);
-        } /*catch (IOException ex) {
-            throw new TestingInternalServerErrorException("Test output not found: " + ex); //UnsuccessException("An I/O error occurs while program testing: " + ex); // absolutely?
-        } */catch (InputGeneratingException e) {
-            throw new TestingInternalServerErrorException("Input generating error: " + e);
-        } catch (OutputGeneratingException e) {
-            throw new TestingInternalServerErrorException("Output generating error: " + e);
-        } catch (ComparisonFailedException e) {
-            throw new UnsuccessException(e.toString());
-        } catch (InputTestReadException e) {
-            throw new TestingInternalServerErrorException(e.toString());
-        } catch (InputWriteException e) {
-            //throw new RunTimeErrorException(e.toString());
-        } catch (OutputReadException e) {
-            //throw new RunTimeErrorException(e.toString());
-        } catch (OutputTestReadException e) {
-            throw new TestingInternalServerErrorException(e.toString());
-        } /*catch (ProcessNotRunningException e) {
-        throw new TestingInternalServerErrorException(e.toString());
-        }*/ catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             throw new TestingInternalServerErrorException("Interrupted: " + e);
+        } catch (TestingInternalServerErrorException e) {
+            if (executor.quietStop()) {
+                System.err.println("Process was running for " + executor.getWorkTime());
+                System.err.println("Program in test case " + testNumber + " exited with code " + executor.getCode());
+            }
+            throw e;
+        } catch (ComparisonFailedException e) {
+            if (executor.quietStop()) {
+                System.err.println("Process was running for " + executor.getWorkTime());
+                System.err.println("Program in test case " + testNumber + " exited with code " + executor.getCode());
+            }
+            throw new UnsuccessException(e.toString());
         } finally {
             FileOperator.close(errorReader);
         }

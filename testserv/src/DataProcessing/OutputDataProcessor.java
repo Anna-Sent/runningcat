@@ -14,19 +14,11 @@ import java.util.ArrayList;
  */
 public abstract class OutputDataProcessor extends DataProcessor {
 
-    ArrayList<String> outputLines;
-
     /**
-     *
+     * 
      * @return
      */
-    public StringBuffer getOutput() {
-        StringBuffer sbuf = new StringBuffer();
-        for (int i = 0; i < outputLines.size(); ++i) {
-            sbuf.append(outputLines.get(i) + "\n");
-        }
-        return sbuf;
-    }
+    public abstract StringBuffer getOutput();
 
     /**
      *

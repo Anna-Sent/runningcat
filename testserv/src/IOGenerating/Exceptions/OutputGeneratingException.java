@@ -4,7 +4,7 @@ package IOGenerating.Exceptions;
  *
  * @author Анна
  */
-public class OutputGeneratingException extends Exception {
+public class OutputGeneratingException extends IOGeneratingException {
 
     /**
      *

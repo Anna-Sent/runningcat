@@ -1,12 +1,10 @@
-/*
- */
 package IOGenerating.Exceptions;
 
 /**
  *
  * @author partizanka
  */
-public class InputGeneratingException extends Exception {
+public class InputGeneratingException extends IOGeneratingException {
 
     /**
      * 

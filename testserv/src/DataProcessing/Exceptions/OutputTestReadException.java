@@ -6,7 +6,7 @@ package DataProcessing.Exceptions;
  *
  * @author partizanka
  */
-public class OutputTestReadException extends Exception {
+public class OutputTestReadException extends TestReadException {
 
     /**
      * 

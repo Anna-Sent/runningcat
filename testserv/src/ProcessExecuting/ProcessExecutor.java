@@ -25,6 +25,7 @@ public class ProcessExecutor {
     private long timeLimit = 0, beginTime, endTime;
     private InputStream errorStream, inputStream;
     private OutputStream outputStream;
+    private int code;
 
     /**
      *
@@ -73,9 +74,9 @@ public class ProcessExecutor {
      * 
      * @return
      */
-    public boolean isRunning() {
+    /*public boolean isRunning() {
         return process != null;
-    }
+    }*/
 
     /**
      *
@@ -86,9 +87,9 @@ public class ProcessExecutor {
     public int waitForExit() throws ProcessNotRunningException, InterruptedException {
         if (process != null) {
             try {
-                int exitCode = process.waitFor(); // throws InterruptedException if the process was killed by timer
+                code = process.waitFor(); // throws InterruptedException if the process was killed by timer
                 endTime = System.currentTimeMillis();
-                return exitCode;
+                return code;
             } finally {
                 timer.cancel();
             }
@@ -164,6 +165,28 @@ public class ProcessExecutor {
         public void run() {
             process.destroy();
         }
+    }
+
+    /**
+     * 
+     */
+    public boolean quietStop() {
+        try {
+            code = waitForExit(); // throws ProcessExecutingException, InterruptedException
+            return true;
+        } catch (ProcessNotRunningException ex) {
+        } catch (InterruptedException ex) {
+        }
+        return false;
+    }
+
+    /**
+     * after stop()
+     *
+     * @return code
+     */
+    public int getCode() {
+        return code;
     }
 
     /**
