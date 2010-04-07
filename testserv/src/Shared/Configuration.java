@@ -44,7 +44,6 @@ class Language {
     class ExecutionInfo {
 
         String execute_cmd = null;
-        int run_time_output_file_descriptor = -1;
     }
     ExecutionInfo einfo = null;
 
@@ -85,9 +84,7 @@ class Language {
                 NamedNodeMap attrs = child.getAttributes();
                 for (int j = 0; j < attrs.getLength(); ++j) {
                     Node attr = attrs.item(j);
-                    if (attr.getNodeName().equals("run_time_output_file_descriptor")) {
-                        einfo.run_time_output_file_descriptor = Integer.parseInt(attr.getNodeValue());
-                    } else if (attr.getNodeName().equals("execute_cmd")) {
+                    if (attr.getNodeName().equals("execute_cmd")) {
                         einfo.execute_cmd = attr.getNodeValue();
                     }
                 }
@@ -104,8 +101,7 @@ class Language {
                 + (cinfo == null ? "null" : (cinfo.compile_cmd == null ? "null" : cinfo.compile_cmd)) + "; "
                 + "fd " + (cinfo == null ? "null" : cinfo.compile_output_file_descriptor) + "; "
                 + "execute: "
-                + (einfo == null ? "null" : (einfo.execute_cmd == null ? "null" : einfo.execute_cmd)) + "; "
-                + "fd " + (einfo == null ? "null" : einfo.run_time_output_file_descriptor);
+                + (einfo == null ? "null" : (einfo.execute_cmd == null ? "null" : einfo.execute_cmd));
     }
 }
 
@@ -214,10 +210,6 @@ public class Configuration {
                 }
                 if (language.einfo == null) {
                     throw new ConfigurationErrorException("Execution information is not defined for language " + language.id);
-                }
-                if (language.einfo.run_time_output_file_descriptor != 1 && language.einfo.run_time_output_file_descriptor != 2) {
-                    throw new ConfigurationErrorException("Run time output file descriptor value is not correct for language "
-                            + language.id + ". Must have value 1 (standard output) or 2 (error output)");
                 }
                 if (language.einfo.execute_cmd == null) {
                     throw new ConfigurationErrorException("Execution command is not defined for language " + language.id);
@@ -416,15 +408,6 @@ public class Configuration {
      */
     public static String[] getCompilerCommand(int langId) {
         return platforms.get(osname).languages.get(new Integer(langId)).cinfo.compile_cmd.split(",");
-    }
-
-    /**
-     *
-     * @param langId
-     * @return
-     */
-    public static int getRunTimeOutputDescriptor(int langId) {
-        return platforms.get(osname).languages.get(new Integer(langId)).einfo.run_time_output_file_descriptor;
     }
 
     /**
