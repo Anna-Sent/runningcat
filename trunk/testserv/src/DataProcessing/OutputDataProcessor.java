@@ -6,12 +6,27 @@ import DataProcessing.Exceptions.ComparisonFailedException;
 import DataProcessing.Exceptions.OutputReadException;
 import DataProcessing.Exceptions.OutputTestReadException;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 
 /**
  *
  * @author partizanka
  */
 public abstract class OutputDataProcessor extends DataProcessor {
+
+    ArrayList<String> outputLines;
+
+    /**
+     *
+     * @return
+     */
+    public StringBuffer getOutput() {
+        StringBuffer sbuf = new StringBuffer();
+        for (int i = 0; i < outputLines.size(); ++i) {
+            sbuf.append(outputLines.get(i) + "\n");
+        }
+        return sbuf;
+    }
 
     /**
      *

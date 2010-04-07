@@ -28,15 +28,15 @@ public class SimpleOutputDataProcessor extends OutputDataProcessor {
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
             throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         try {
-            ArrayList<String> lines1, lines2;
+            ArrayList<String> testOutputLines;
             try {
-                lines1 = super.read(testOutputReader);
+                testOutputLines = super.read(testOutputReader);
             } catch (DataReadException e) {
                 throw new OutputTestReadException("Test output read error: " + e);
             }
             try {
-                lines2 = super.read(outputReader);
-                if (!super.isEqual(lines1, lines2)) {
+                super.outputLines = super.read(outputReader);
+                if (!super.isEqual(testOutputLines, outputLines)) {
                     throw new ComparisonFailedException("Test output is not equal to program output");
                 }
             } catch (DataReadException e) {
