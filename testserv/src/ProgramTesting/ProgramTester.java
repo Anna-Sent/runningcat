@@ -11,13 +11,16 @@ import DataProcessing.Exceptions.OutputTestReadException;
 import DataProcessing.InputDataProcessor;
 import DataProcessing.OutputDataProcessor;
 import FileOperations.FileOperator;
-import InputGenerating.Exceptions.InputGeneratingException;
-import InputGenerating.InputGenerator;
+import IOGenerating.Exceptions.InputGeneratingException;
+import IOGenerating.Exceptions.OutputGeneratingException;
+import IOGenerating.InputGenerator;
+import IOGenerating.OutputGenerator;
 import ProcessExecuting.Exceptions.ProcessExecutingException;
 import ProcessExecuting.ProcessExecutor;
 import ProcessExecuting.Exceptions.ProcessNotRunningException;
 import ProgramTesting.Exceptions.TestingInternalServerErrorException;
 import ProgramTesting.Exceptions.TestingTimeLimitExceededException;
+import Shared.Configuration;
 import Shared.ExitCodes;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 public class ProgramTester {
 
     private InputGenerator inputGenerator;
+    private OutputGenerator outputGenerator;
     private InputDataProcessor inputDataProcessor;
     private OutputDataProcessor outputDataProcessor;
     private StringBuffer message;
@@ -48,9 +52,11 @@ public class ProgramTester {
      * @param outputDataProcessor
      */
     public ProgramTester(InputGenerator inputGenerator,
+            OutputGenerator outputGenerator,
             InputDataProcessor inputDataProcessor,
             OutputDataProcessor outputDataProcessor) {
         this.inputGenerator = inputGenerator;
+        this.outputGenerator = outputGenerator;
         this.inputDataProcessor = inputDataProcessor;
         this.outputDataProcessor = outputDataProcessor;
     }
@@ -121,27 +127,12 @@ public class ProgramTester {
             outputReader = new BufferedReader(
                     new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
             testOutputReader = new BufferedReader(
-                    new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.out[testNumber]));
+                    outputGenerator.getReader(testNumber));
             outputDataProcessor.process(outputReader, testOutputReader);
-        } catch (ProcessExecutingException ex) { // from executor.execute()
-            throw new TestingInternalServerErrorException("Program running error: " + ex);
-        } catch (IOException ex) {
-            throw new TestingInternalServerErrorException("Test output not found: " + ex); //UnsuccessException("An I/O error occurs while program testing: " + ex); // absolutely?
-        } catch (InputGeneratingException e) {
-            throw new TestingInternalServerErrorException("Input generating error: " + e);
-        } catch (ComparisonFailedException e) {
-            throw new UnsuccessException(e.toString());
-        } catch (InputTestReadException e) {
-            throw new TestingInternalServerErrorException(e.toString());
-        } catch (InputWriteException e) {
-            throw new RunTimeErrorException(e.toString());
-        } catch (OutputReadException e) {
-            throw new RunTimeErrorException(e.toString());
-        } catch (OutputTestReadException e) {
-            throw new TestingInternalServerErrorException(e.toString());
-        } finally {
-            try {
-                message = new StringBuffer(100);
+
+
+            if (Configuration.getRunTimeOutputDescriptor(program.lang) == 2) {
+                message = new StringBuffer();
                 try {
                     errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
                     String line;
@@ -151,27 +142,46 @@ public class ProgramTester {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                int code = executor.waitForExit();
-                System.err.println("Process was running for " + executor.getWorkTime());
-                System.err.println("Program in test case " + testNumber + " exited with code " + code);
-                if (executor.isOutOfTime()) {
-                    throw new TestingTimeLimitExceededException("Program is out of time");
-                }
-                if (code != 0) {
-                    processMessage(program);
-                    throw new RunTimeErrorException(message.toString());
-                }
-            } catch (ProcessNotRunningException e) {
-                throw new TestingInternalServerErrorException(e.toString());
-            } catch (InterruptedException e) {
-                throw new TestingInternalServerErrorException("Interrupted: " + e);
-            } finally {
-                FileOperator.close(errorReader);
-                //FileOperator.close(inputWriter);
-                //FileOperator.close(testInputReader);
-                //FileOperator.close(outputReader);
-                //FileOperator.close(testOutputReader);
+            } else if (Configuration.getRunTimeOutputDescriptor(program.lang) == 1) {
+                message = outputDataProcessor.getOutput();
+            } else {
+                message = new StringBuffer();
             }
+            int code = executor.waitForExit(); // throws ProcessNotRunningException, InterruptedException
+            System.err.println("Process was running for " + executor.getWorkTime());
+            System.err.println("Program in test case " + testNumber + " exited with code " + code);
+            if (executor.isOutOfTime()) {
+                throw new TestingTimeLimitExceededException("Program is out of time");
+            }
+            if (code != 0) {
+                processMessage(program);
+                throw new RunTimeErrorException(message.toString());
+            }
+
+        } catch (ProcessExecutingException ex) { // from executor.execute()
+            throw new TestingInternalServerErrorException("Program running error: " + ex);
+        } /*catch (IOException ex) {
+            throw new TestingInternalServerErrorException("Test output not found: " + ex); //UnsuccessException("An I/O error occurs while program testing: " + ex); // absolutely?
+        } */catch (InputGeneratingException e) {
+            throw new TestingInternalServerErrorException("Input generating error: " + e);
+        } catch (OutputGeneratingException e) {
+            throw new TestingInternalServerErrorException("Output generating error: " + e);
+        } catch (ComparisonFailedException e) {
+            throw new UnsuccessException(e.toString());
+        } catch (InputTestReadException e) {
+            throw new TestingInternalServerErrorException(e.toString());
+        } catch (InputWriteException e) {
+            //throw new RunTimeErrorException(e.toString());
+        } catch (OutputReadException e) {
+            //throw new RunTimeErrorException(e.toString());
+        } catch (OutputTestReadException e) {
+            throw new TestingInternalServerErrorException(e.toString());
+        } /*catch (ProcessNotRunningException e) {
+        throw new TestingInternalServerErrorException(e.toString());
+        }*/ catch (InterruptedException e) {
+            throw new TestingInternalServerErrorException("Interrupted: " + e);
+        } finally {
+            FileOperator.close(errorReader);
         }
     }
 }

@@ -12,8 +12,10 @@ import DataProcessing.SimpleOutputDataProcessor;
 import FileOperations.Exceptions.CanNotCreateTemporaryDirectoryException;
 import FileOperations.Exceptions.CanNotCreateTemporaryFileException;
 import FileOperations.Exceptions.CanNotWriteFileException;
-import InputGenerating.InputFromFileGenerator;
-import InputGenerating.InputGenerator;
+import IOGenerating.InputFromFileGenerator;
+import IOGenerating.InputGenerator;
+import IOGenerating.OutputFromFileGenerator;
+import IOGenerating.OutputGenerator;
 import ProcessExecuting.Exceptions.ProcessExecutingException;
 import ProcessExecuting.Exceptions.ProcessNotRunningException;
 import ProcessExecuting.ProcessExecutor;
@@ -208,9 +210,11 @@ public class Compiler {
             c.compile(p);
             System.err.println("success compilation");
             InputGenerator inputGenerator = new InputFromFileGenerator(p);
+            OutputGenerator outputGenerator = new OutputFromFileGenerator(p);
             InputDataProcessor inputDataProcessor = new SimpleInputDataProcessor();
             OutputDataProcessor outputDataProcessor = new SimpleOutputDataProcessor();
-            ProgramTester tester = new ProgramTester(inputGenerator,
+            ProgramTester tester = new ProgramTester(
+                    inputGenerator, outputGenerator,
                     inputDataProcessor, outputDataProcessor);
             tester.execute(p);
         } catch (ClassNotFoundException e) {

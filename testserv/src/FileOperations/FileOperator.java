@@ -153,7 +153,7 @@ public class FileOperator {
                 reader.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Reader closing error");//e.printStackTrace();
         }
     }
 
@@ -167,7 +167,7 @@ public class FileOperator {
                 writer.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Writer closing error");//e.printStackTrace();
         }
     }
 }
