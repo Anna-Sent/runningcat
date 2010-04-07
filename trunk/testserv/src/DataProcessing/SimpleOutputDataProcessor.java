@@ -17,6 +17,22 @@ import java.util.ArrayList;
  */
 public class SimpleOutputDataProcessor extends OutputDataProcessor {
 
+    ArrayList<String> outputLines;
+
+    /**
+     *
+     * @return
+     */
+    public StringBuffer getOutput() {
+        StringBuffer sbuf = new StringBuffer();
+        if (outputLines != null) {
+            for (int i = 0; i < outputLines.size(); ++i) {
+                sbuf.append(outputLines.get(i) + "\n");
+            }
+        }
+        return sbuf;
+    }
+
     /**
      *
      * @param outputReader
@@ -35,7 +51,7 @@ public class SimpleOutputDataProcessor extends OutputDataProcessor {
                 throw new OutputTestReadException("Test output read error: " + e);
             }
             try {
-                super.outputLines = super.read(outputReader);
+                outputLines = super.read(outputReader);
                 if (!super.isEqual(testOutputLines, outputLines)) {
                     throw new ComparisonFailedException("Test output is not equal to program output");
                 }

@@ -45,7 +45,7 @@ import java.sql.Statement;
 public class SubmissionProcessor {
 
     private int submissionId, userId, langId, problemstatementId,
-            problem_id;
+            problemId;
     private String testsdir, name, lastname, firstname, programtext;
     private StringBuffer comment, error;
     private int res;
@@ -80,7 +80,7 @@ public class SubmissionProcessor {
             userId = rs.getInt("userid");
             langId = rs.getInt("langid");
             problemstatementId = rs.getInt("problemstatement");
-            problem_id = rs.getInt("problem_id");
+            problemId = rs.getInt("problem_id");
             testsdir = rs.getString("testsdir");
             name = rs.getString("name");
             lastname = rs.getString("lastname");
@@ -184,7 +184,7 @@ public class SubmissionProcessor {
             comment.append(ExitCodes.getMsg(ExitCodes.RUNTIME_ERROR) + "\n");
             comment.append(e.getMessage());
             error.append("Failed tests: " + e.getMessage());
-            System.err.println(p.text);
+            //System.err.println(p.text);
             res = ExitCodes.RUNTIME_ERROR;
             return false;
         } catch (TestingTimeLimitExceededException e) {
@@ -206,11 +206,11 @@ public class SubmissionProcessor {
                 res = -1;
                 if (fillData(rs)) {
                     if (setInProcessStatus()) {
-                        if (Problems.getInstance().contains(problem_id)) {
+                        if (Problems.getInstance().contains(problemId)) {
                             // create program object
                             Program p = new Program(
                                     langId, programtext,
-                                    Problems.getInstance().getProblemById(problem_id));
+                                    Problems.getInstance().getProblemById(problemId));
                             // create necessary files on disk
                             if (createProgram(p)) {
                                 // compile program
