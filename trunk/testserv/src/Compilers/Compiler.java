@@ -101,7 +101,7 @@ public class Compiler {
             CompilationErrorException,
             CompilationInternalServerErrorException,
             CompilationTimeLimitExceededException {
-        message = new StringBuffer(100);
+        message = new StringBuffer();
         ProcessExecutor executor = new ProcessExecutor(
                 program.getCompileCmd(),
                 program.getDirPath(),

@@ -135,21 +135,15 @@ public class ProgramTester {
             } catch (OutputReadException e) {
                 // throw new RunTimeErrorException(e.toString());
             }
-            if (Configuration.getRunTimeOutputDescriptor(program.lang) == 2) {
-                message = new StringBuffer();
-                try {
-                    errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
-                    String line;
-                    while ((line = errorReader.readLine()) != null) {
-                        message.append(line + "\n");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+            message = new StringBuffer();
+            try {
+                errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
+                String line;
+                while ((line = errorReader.readLine()) != null) {
+                    message.append(line + "\n");
                 }
-            } else if (Configuration.getRunTimeOutputDescriptor(program.lang) == 1) {
-                message = outputDataProcessor.getOutput();
-            } else {
-                message = new StringBuffer();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             int code = executor.waitForExit(); // throws ProcessNotRunningException, InterruptedException
             System.err.println("Process was running for " + executor.getWorkTime());

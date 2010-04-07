@@ -26,7 +26,6 @@
 				compile_cmd="fpc,-Ciort,-Mdelphi,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="1"
 				execute_cmd="{bin_path}">
 			</execute>
 		</language>
@@ -41,7 +40,6 @@
 				compile_cmd="g++,-o,{bin_file},{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="{bin_path}">
 			</execute>
 		</language>
@@ -56,7 +54,6 @@
 				compile_cmd="javac,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="java,{src_prefix}">
 			</execute>
 		</language>
@@ -66,7 +63,6 @@
 			src_prefix="temp"
 			src_suffix=".py">
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="python,{src_file}">
 			</execute>
 		</language>
@@ -81,7 +77,6 @@
 				compile_cmd="mcs,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="mono,{bin_file}">
 			</execute>
 		</language>
@@ -102,7 +97,6 @@
 				compile_cmd="fpc,-Ciort,-Mdelphi,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="1"
 				execute_cmd="{bin_path}">
 			</execute>
 		</language>
@@ -117,7 +111,6 @@
 				compile_cmd="g++,-o,{bin_file},{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="{bin_path}">
 			</execute>
 		</language>
@@ -132,7 +125,6 @@
 				compile_cmd="javac,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="java,{src_prefix}">
 			</execute>
 		</language>
@@ -142,7 +134,6 @@
 			src_prefix="temp"
 			src_suffix=".py">
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="python,{src_file}">
 			</execute>
 		</language>
@@ -157,7 +148,6 @@
 				compile_cmd="mcs.bat,{src_file}">
 			</compile>
 			<execute
-				run_time_output_file_descriptor="2"
 				execute_cmd="mono,{bin_file}">
 			</execute>
 		</language>
