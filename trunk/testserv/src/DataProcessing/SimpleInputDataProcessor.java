@@ -1,5 +1,3 @@
-/*
- */
 package DataProcessing;
 
 import DataProcessing.Exceptions.DataWriteException;
@@ -9,7 +7,6 @@ import DataProcessing.Exceptions.InputWriteException;
 import FileOperations.FileOperator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

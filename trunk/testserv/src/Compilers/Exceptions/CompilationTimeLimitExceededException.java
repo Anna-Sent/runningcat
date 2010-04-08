@@ -1,5 +1,3 @@
-/*
- */
 package Compilers.Exceptions;
 
 import Shared.TimeLimitExceededException;

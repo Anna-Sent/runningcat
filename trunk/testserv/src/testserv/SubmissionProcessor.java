@@ -1,5 +1,3 @@
-/*
- */
 package testserv;
 
 import Compilers.Compiler;
@@ -67,7 +65,6 @@ public class SubmissionProcessor {
         String langsstr = "";
         for (int i = 0; i < langs.length; ++i) {
             langsstr += ("'" + langs[i] + "'" + ((i < langs.length - 1) ? "," : ""));
-            //System.err.println(langs[i]);
         }
         condition = "submission.processed='" + NOT_PROCESSED + "' and "
                 + "submission.langid in (" + langsstr + ")";
@@ -85,7 +82,6 @@ public class SubmissionProcessor {
             name = rs.getString("name");
             lastname = rs.getString("lastname");
             firstname = rs.getString("firstname");
-            //programtext = rs.getString("programtext");
             StringBuffer sbuf = new StringBuffer();
             reader = rs.getCharacterStream("programtext");
             char ch;
@@ -184,13 +180,11 @@ public class SubmissionProcessor {
             comment.append(ExitCodes.getMsg(ExitCodes.RUNTIME_ERROR) + "\n");
             comment.append(e.getMessage());
             error.append("Failed tests: " + e.getMessage());
-            //System.err.println(p.text);
             res = ExitCodes.RUNTIME_ERROR;
             return false;
         } catch (TestingTimeLimitExceededException e) {
             comment.append(ExitCodes.getMsg(ExitCodes.TIME_OUT_ERROR));
             error.append("Failed tests: " + e.getMessage());
-            System.err.println(p.text);
             res = ExitCodes.TIME_OUT_ERROR;
             return false;
         }
@@ -200,41 +194,35 @@ public class SubmissionProcessor {
 
         @Override
         public void processResultSet(ResultSet rs) throws SQLException {
-            while (rs.next()) {
+            while (rs.next()) { // обрабатываем текущую запись
                 comment.setLength(0);
                 error.setLength(0);
                 res = -1;
-                if (fillData(rs)) {
-                    if (setInProcessStatus()) {
-                        if (Problems.getInstance().contains(problemId)) {
-                            // create program object
-                            Program p = new Program(
+                if (fillData(rs)) { // заполнить необходимые данные
+                    if (setInProcessStatus()) { // установить статус "обрабатывается"
+                        if (Problems.getInstance().contains(problemId)) { // если соответствующая задача найдена
+                            Program p = new Program( // создать экземпляр программы
                                     langId, programtext,
                                     Problems.getInstance().getProblemById(problemId));
-                            // create necessary files on disk
-                            if (createProgram(p)) {
-                                // compile program
-                                if (compileProgram(p)) {
-                                    // if compilation successfull, then test program
-                                    if (testProgram(p)) {
-                                        res = ExitCodes.SUCCESS; // yahoo!
+                            if (createProgram(p)) { // создать необходимые файлы на диске
+                                if (compileProgram(p)) { // компилировать программу
+                                    if (testProgram(p)) { // тестировать программу
+                                        res = ExitCodes.SUCCESS; // тесты пройдены
                                         comment.append(ExitCodes.getMsg(ExitCodes.SUCCESS));
-                                    } // error while testing program
-                                } // error while compilation program
-                                // files exist, delete them
-                                p.close();
-                            } // error while creating necessary files
-                        } else {
+                                    } // ошибка при тестировании программы
+                                } // ошибка при компиляции программы
+                                p.close(); // удаляем созданные файлы
+                            } // ошибка при создании необходимых файлов
+                        } else { // задача не найдена
                             comment.append(ExitCodes.getMsg(ExitCodes.INTERNAL_ERROR));
                             error.append("Problem not found :-(");
                             res = ExitCodes.INTERNAL_ERROR;
-                        }
-                        // previous setting status was successfull, then try to set processed status
-                        setProcessedStatus();
-                    } // error while setting status
-                } // error while filling submission data
-                // Put error messages
-                System.err.println("UPDATED [" + name + "]" + " user=" + firstname + " " + lastname + "\n" + comment + "\n" + error);
+                        } // установить
+                        setProcessedStatus(); // установить статус "обработано"
+                        System.err.println("UPDATED [" + name + "]" + " user=" + firstname + " " + lastname);
+                    } // ошибка sql при установке статуса
+                } // ошибка sql при чтении очередной записи
+                System.err.println(comment + "\n" + error);
                 System.err.println("=======================================================================");
             } // end while
         }
@@ -270,7 +258,9 @@ public class SubmissionProcessor {
         try {
             statement = connection.createStatement();
             statement.executeUpdate(
-                    "update mdl_problemstatement_submissions set processed = '" + IN_PROCESS + "' where id='" + submissionId + "'");
+                    "UPDATE mdl_problemstatement_submissions " +
+                    "SET processed = '" + IN_PROCESS + "' " +
+                    "WHERE id='" + submissionId + "';");
             return true;
         } catch (SQLException e) {
             comment.append(ExitCodes.getMsg(ExitCodes.INTERNAL_ERROR));
@@ -295,12 +285,12 @@ public class SubmissionProcessor {
             com = com.replace("'", "\\'");
             er = er.replace("'", "\\'");
             statement = connection.createStatement();
-            statement.executeUpdate("update mdl_problemstatement_submissions "
-                    + "set processed='" + PROCESSED + "', "
+            statement.executeUpdate("UPDATE mdl_problemstatement_submissions "
+                    + "SET processed='" + PROCESSED + "', "
                     + "submissioncomment='" + com + "', "
                     + "errormessage='" + er + "', "
                     + "succeeded='" + res + "' "
-                    + "where id=" + submissionId + ";");
+                    + "WHERE id=" + submissionId + ";");
             return true;
         } catch (SQLException e) {
             comment.append(ExitCodes.getMsg(ExitCodes.INTERNAL_ERROR));

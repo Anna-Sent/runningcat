@@ -1,5 +1,3 @@
-/*
- */
 package FileOperations;
 
 import FileOperations.Exceptions.CanNotWriteFileException;

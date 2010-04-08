@@ -1,5 +1,3 @@
-/*
- */
 package Compilers;
 
 import Compilers.Exceptions.CompilationInternalServerErrorException;

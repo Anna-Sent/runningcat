@@ -1,5 +1,3 @@
-/*
- */
 package ProcessExecuting;
 
 import ProcessExecuting.Exceptions.ProcessRunningException;
@@ -26,6 +24,7 @@ public class ProcessExecutor {
     private InputStream errorStream, inputStream;
     private OutputStream outputStream;
     private int code;
+    private boolean isRunning;
 
     /**
      *
@@ -41,6 +40,7 @@ public class ProcessExecutor {
             this.curDir = null;
         }
         this.timeLimit = timeLimit;
+        isRunning = false;
     }
 
     /**
@@ -56,6 +56,7 @@ public class ProcessExecutor {
                     inputStream = process.getInputStream();
                     outputStream = process.getOutputStream();
                     errorStream = process.getErrorStream();
+                    isRunning = true;
                 } catch (IOException ex) {
                     throw new ProcessCanNotBeRunException("An I/O error occurs. Process cannot be run: " + ex);
                 }
@@ -74,9 +75,9 @@ public class ProcessExecutor {
      * 
      * @return
      */
-    /*public boolean isRunning() {
-        return process != null;
-    }*/
+    public boolean isRunning() {
+        return isRunning;
+    }
 
     /**
      *

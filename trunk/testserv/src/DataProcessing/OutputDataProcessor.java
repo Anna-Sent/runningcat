@@ -6,7 +6,6 @@ import DataProcessing.Exceptions.ComparisonFailedException;
 import DataProcessing.Exceptions.OutputReadException;
 import DataProcessing.Exceptions.OutputTestReadException;
 import java.io.BufferedReader;
-import java.util.ArrayList;
 
 /**
  *
