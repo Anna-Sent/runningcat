@@ -4,38 +4,24 @@ import ProgramTesting.Exceptions.UnsuccessException;
 import ProgramTesting.Exceptions.RunTimeErrorException;
 import Program.Program;
 import DataProcessing.Exceptions.ComparisonFailedException;
-import DataProcessing.Exceptions.InputTestReadException;
 import DataProcessing.Exceptions.InputWriteException;
 import DataProcessing.Exceptions.OutputReadException;
-import DataProcessing.Exceptions.OutputTestReadException;
-import DataProcessing.Exceptions.TestReadException;
 import DataProcessing.InputDataProcessor;
 import DataProcessing.OutputDataProcessor;
 import FileOperations.FileOperator;
-import IOGenerating.Exceptions.IOGeneratingException;
-import IOGenerating.Exceptions.InputGeneratingException;
-import IOGenerating.Exceptions.OutputGeneratingException;
 import IOGenerating.InputGenerator;
 import IOGenerating.OutputGenerator;
 import ProcessExecuting.Exceptions.ProcessExecutingException;
 import ProcessExecuting.ProcessExecutor;
-import ProcessExecuting.Exceptions.ProcessNotRunningException;
 import ProgramTesting.Exceptions.TestingInternalServerErrorException;
 import ProgramTesting.Exceptions.TestingTimeLimitExceededException;
-import Shared.Configuration;
-import Shared.ExitCodes;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
 
 /**
+ * Класс для тестирования программ.
  *
  * @author partizanka
  */
@@ -48,11 +34,12 @@ public class ProgramTester {
     private StringBuffer message;
 
     /**
+     * Конструктор класса для тестирования программ.
      *
-     * @param inputGenerator
-     * @param outputGenerator 
-     * @param inputDataProcessor
-     * @param outputDataProcessor
+     * @param inputGenerator генератор входных данных
+     * @param outputGenerator генератор выходных данных
+     * @param inputDataProcessor обработчик входных данных
+     * @param outputDataProcessor обработчик выходных данных
      */
     public ProgramTester(InputGenerator inputGenerator,
             OutputGenerator outputGenerator,
@@ -65,36 +52,38 @@ public class ProgramTester {
     }
 
     /**
-     * Executes and tests the program if it has binary file and system tests are
-     * defined.
+     * Выполняет и тестирует программу на всех тестах до первого проваленного.
      *
      * TODO memory
      *
-     * @param program Program to execute.
-     * @throws UnsuccessException
-     * @throws TestingInternalServerErrorException 
-     * @throws TestingTimeLimitExceededException
-     * @throws RunTimeErrorException
+     * @param program программа, не должна быть null
+     * @throws UnsuccessException в одном из тестов был получен неверный ответ (вывод)
+     * @throws TestingInternalServerErrorException ошибка на сервере (не найдены тесты и т.д.)
+     * @throws TestingTimeLimitExceededException программа превысила лимит времени
+     * @throws RunTimeErrorException ошибка времени выполнения
      */
     public void execute(Program program) throws
             UnsuccessException,
             TestingInternalServerErrorException,
             RunTimeErrorException,
             TestingTimeLimitExceededException {
-        //if (program.canExecute()) {
         if (program.problem != null && program.problem.n > 0) {
-            // executing and testing the program
-            for (int i = 0; i < program.problem.n; ++i) { // testing the program test by test...
+            for (int i = 0; i < program.problem.n; ++i) { // тестируем программу тест за тестом до первой ошибки
                 testProgram(program, i);
             }
         } else {
             throw new TestingInternalServerErrorException("System tests not found");
         }
-        //} else {
-        //    throw new TestingInternalServerErrorException("Binary file doesn't exist");
-        //}
     }
 
+    /**
+     * Метод обрабатывает сообщение, которое было получено со стандартного вывода
+     * ошибок: заменяет вхождения имени файла с исходным кодом программы на слово
+     * "&lt;code&gt;". Поле message не должно быть null, то есть вызов возможен
+     * только в testProgram() после чтения вывода ошибок.
+     *
+     * @param p экземпляр программы, при выполнении которой было получено сообщение
+     */
     private void processMessage(Program p) {
         int index;
         index = message.indexOf(p.getSrcFileName());
@@ -104,75 +93,89 @@ public class ProgramTester {
         }
     }
 
+    /**
+     * Тестирует программу на тесте с номером testNumber. Метод обладает
+     * сложной логикой из-за дурацких исключений.
+     *
+     * @param program программа
+     * @param testNumber номер теста
+     * @throws UnsuccessException программа выдает неверный результат
+     * @throws TestingInternalServerErrorException ошибка на сервере
+     * @throws RunTimeErrorException ошибка времени выполнения
+     * @throws TestingTimeLimitExceededException превышен лимит времени
+     */
     private void testProgram(Program program, int testNumber) throws
             UnsuccessException,
             TestingInternalServerErrorException,
             RunTimeErrorException,
             TestingTimeLimitExceededException {
-        BufferedWriter inputWriter = null; // writes to program's input
-        BufferedReader testInputReader = null; // reads from test file
-        BufferedReader outputReader = null; // reads program's output
-        BufferedReader testOutputReader = null; // read a correct test output
-        BufferedReader errorReader = null;
-        ProcessExecutor executor = new ProcessExecutor(program.getExecuteCmd(), program.getDirPath(), 3000);
+        BufferedWriter inputWriter = null; // пишет на вход программе
+        BufferedReader testInputReader = null; // читает входной тест
+        BufferedReader outputReader = null; // читает выход программы
+        BufferedReader testOutputReader = null; // читает выходной тест
+        BufferedReader errorReader = null; // читает стандартный вывод ошибок программы
+        ProcessExecutor executor = new ProcessExecutor(
+                program.getExecuteCmd(),
+                program.getDirPath(), 3000); // выполняет программу
+        boolean ise = false; // internal server error
         try {
-            executor.execute();
-            try {
-                inputWriter = new BufferedWriter(
-                        new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
-                testInputReader = new BufferedReader(
-                        inputGenerator.getReader(testNumber));
-                inputDataProcessor.process(inputWriter, testInputReader);
+            executor.execute(); // throws ProcessRunningException (невозможно в данном случае),
+            // ProcessCanNotBeRunException (ошибка на сервере - нельзя запустить процесс)
+            inputWriter = new BufferedWriter(
+                    new OutputStreamWriter(executor.getOutputStream())); // throws ProcessNotRunningException
+            testInputReader = new BufferedReader(
+                    inputGenerator.getReader(testNumber));
+            inputDataProcessor.process(inputWriter, testInputReader); // посылает данные на вход
 
-                outputReader = new BufferedReader(
-                        new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
-                testOutputReader = new BufferedReader(
-                        outputGenerator.getReader(testNumber));
-                outputDataProcessor.process(outputReader, testOutputReader);
-            } catch (InputWriteException e) {
-                // Если не работает запись на вход программы или чтение выхода
-                // программы, то произошла ошибка времени выполнения.
-            } catch (OutputReadException e) {
-                // throw new RunTimeErrorException(e.toString());
-            }
-            message = new StringBuffer();
-            try {
-                errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
-                String line;
-                while ((line = errorReader.readLine()) != null) {
-                    message.append(line + "\n");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            int code = executor.waitForExit(); // throws ProcessNotRunningException, InterruptedException
-            System.err.println("Process was running for " + executor.getWorkTime());
-            System.err.println("Program in test case " + testNumber + " exited with code " + code);
-            if (executor.isOutOfTime()) {
-                throw new TestingTimeLimitExceededException("Program is out of time");
-            }
-            if (code != 0) {
-                processMessage(program);
-                throw new RunTimeErrorException(message.toString());
-            }
-        } catch (ProcessExecutingException ex) { // from executor.execute()
+            outputReader = new BufferedReader(
+                    new InputStreamReader(executor.getInputStream())); // throws ProcessNotRunningException
+            testOutputReader = new BufferedReader(
+                    outputGenerator.getReader(testNumber));
+            outputDataProcessor.process(outputReader, testOutputReader); // читает выходные данные, сравнивает с эталонными
+        } catch (InputWriteException e) {
+            // Если не работает запись на вход программы или чтение выхода
+            // программы, то произошла ошибка времени выполнения.
+        } catch (OutputReadException e) {
+            // В блоке finally будет проверен код выхода программы.
+        } catch (ProcessExecutingException ex) { // из executor.execute(), ошибка запуска программы
             throw new TestingInternalServerErrorException("Program running error: " + ex);
-        } catch (InterruptedException e) {
-            throw new TestingInternalServerErrorException("Interrupted: " + e);
-        } catch (TestingInternalServerErrorException e) {
-            if (executor.quietStop()) {
-                System.err.println("Process was running for " + executor.getWorkTime());
-                System.err.println("Program in test case " + testNumber + " exited with code " + executor.getCode());
-            }
+        } catch (TestingInternalServerErrorException e) { // при обработке входных/выходных данных, тесты не найдены или не могут быть прочитаны
+            ise = true;
             throw e;
-        } catch (ComparisonFailedException e) {
-            if (executor.quietStop()) {
-                System.err.println("Process was running for " + executor.getWorkTime());
-                System.err.println("Program in test case " + testNumber + " exited with code " + executor.getCode());
-            }
-            throw new UnsuccessException(e.toString());
+        } catch (ComparisonFailedException e) { // при обработке выходных данных, может быть ошибка времени выполнения
+            throw new UnsuccessException(e.getMessage());
         } finally {
-            FileOperator.close(errorReader);
+            if (executor.isRunning()) { // если программа была запущена, надо ее завершить
+                // читает стандартный вывод ошибок
+                message = new StringBuffer();
+                try {
+                    errorReader = new BufferedReader(new InputStreamReader(executor.getErrorStream())); // throws ProcessNotRunning - невозможно
+                    String line;
+                    while ((line = errorReader.readLine()) != null) { // throws IOException
+                        message.append(line + "\n");
+                    }
+                } catch (Exception e) { // ошибка ввода/вывода
+                    e.printStackTrace();
+                } finally {
+                    FileOperator.close(errorReader);
+                }
+                // ждем завершения программы
+                if (executor.quietStop()) {
+                    System.err.println("Process was running for " + executor.getWorkTime());
+                    System.err.println("Program in test case " + testNumber + " exited with code " + executor.getCode());
+                    if (!ise) { // если тесты были найдены и прочитаны
+                        // код также будет выполняться, если была ComparisonFailedException - может быть ошибка времени выполнения
+                        if (executor.isOutOfTime()) {
+                            throw new TestingTimeLimitExceededException("Program is out of time");
+                        }
+                        if (executor.getCode() != 0) {
+                            processMessage(program);
+                            throw new RunTimeErrorException(message.toString());
+                        }
+                    } // иначе ошибка на сервере
+                } // иначе throws ProcessNotRunningException - невозможно, так как программа была запущена,
+                // InterruptedException - невозможно
+            } // иначе - ошибка на сервере, процесс не был запущен
         }
     }
 }

@@ -1,5 +1,3 @@
-/*
- */
 package IOGenerating;
 
 import IOGenerating.Exceptions.InputGeneratingException;

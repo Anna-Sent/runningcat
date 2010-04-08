@@ -1,5 +1,3 @@
-/*
- */
 package DataBaseContent;
 
 import DataBaseContent.Generic.Data;
@@ -8,7 +6,9 @@ import DataBaseContent.Generic.ResultSetProcessor;
 import DataBaseContent.Generic.SelectQueryString;
 import DataBaseContent.Generic.StatementProcessor;
 import java.util.HashMap;
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 /**

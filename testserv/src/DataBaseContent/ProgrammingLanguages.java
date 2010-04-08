@@ -1,5 +1,3 @@
-/*
- */
 package DataBaseContent;
 
 import DataBaseContent.Generic.Data;

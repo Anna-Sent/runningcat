@@ -1,5 +1,3 @@
-/*
- */
 package ProgramTesting.Exceptions;
 
 import Shared.TimeLimitExceededException;

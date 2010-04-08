@@ -1,5 +1,3 @@
-/*
- */
 package DataProcessing;
 
 import DataProcessing.Exceptions.DataReadException;
@@ -8,7 +6,6 @@ import DataProcessing.Exceptions.OutputReadException;
 import DataProcessing.Exceptions.OutputTestReadException;
 import FileOperations.FileOperator;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

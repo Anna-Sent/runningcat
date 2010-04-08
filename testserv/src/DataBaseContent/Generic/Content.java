@@ -1,8 +1,11 @@
-/*
- */
 package DataBaseContent.Generic;
 
-import DataBaseContent.*;
+import DataBaseContent.IGenerators;
+import DataBaseContent.DataTypes;
+import DataBaseContent.ParseFormats;
+import DataBaseContent.Problems;
+import DataBaseContent.Solutions;
+import DataBaseContent.ProgrammingLanguages;
 import java.sql.Connection;
 
 /**

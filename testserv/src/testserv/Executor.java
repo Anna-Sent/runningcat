@@ -2,7 +2,9 @@ package testserv;
 
 import DataBaseContent.Generic.Content;
 import Shared.Configuration;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *

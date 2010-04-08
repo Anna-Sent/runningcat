@@ -1,5 +1,3 @@
-/*
- */
 package DataProcessing;
 
 import Program.Program;

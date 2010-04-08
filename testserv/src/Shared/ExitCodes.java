@@ -7,31 +7,31 @@ package Shared;
 public class ExitCodes {
 
     /**
-     *
+     * Вывод программы не совпал с эталонным на одном из тестов.
      */
     public static final int UNSUCCESS = 0;
     /**
-     *
+     * Все тесты успешно выполнены.
      */
     public static final int SUCCESS = 1;
     /**
-     *
+     * Ошибка компиляции.
      */
     public static final int COMPILATION_ERROR = 2;
     /**
-     *
+     * Ошибка на сервере.
      */
     public static final int INTERNAL_ERROR = 3;
     /**
-     *
+     * Программа превысила лимит времени.
      */
     public static final int TIME_OUT_ERROR = 4;
     /**
-     *
+     * Программа превысила лимит памяти.
      */
     public static final int MEMORY_OUT_ERROR = 5;
     /**
-     *
+     * Ошибка времени выполнения.
      */
     public static final int RUNTIME_ERROR = 6;
 

@@ -1,10 +1,9 @@
-/*
- */
 package DataBaseContent;
 
 import DataBaseContent.Generic.Data;
 import DataBaseContent.Generic.DataElement;
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 
 /**
  *
