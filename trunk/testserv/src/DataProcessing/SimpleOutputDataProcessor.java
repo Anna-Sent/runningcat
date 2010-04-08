@@ -14,22 +14,6 @@ import java.util.ArrayList;
  */
 public class SimpleOutputDataProcessor extends OutputDataProcessor {
 
-    ArrayList<String> outputLines;
-
-    /**
-     *
-     * @return
-     */
-    public StringBuffer getOutput() {
-        StringBuffer sbuf = new StringBuffer();
-        if (outputLines != null) {
-            for (int i = 0; i < outputLines.size(); ++i) {
-                sbuf.append(outputLines.get(i) + "\n");
-            }
-        }
-        return sbuf;
-    }
-
     /**
      *
      * @param outputReader
@@ -41,7 +25,7 @@ public class SimpleOutputDataProcessor extends OutputDataProcessor {
     public void process(BufferedReader outputReader, BufferedReader testOutputReader)
             throws OutputReadException, OutputTestReadException, ComparisonFailedException {
         try {
-            ArrayList<String> testOutputLines;
+            ArrayList<String> testOutputLines, outputLines;
             try {
                 testOutputLines = super.read(testOutputReader);
             } catch (DataReadException e) {

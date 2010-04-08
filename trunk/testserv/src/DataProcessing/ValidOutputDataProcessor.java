@@ -22,11 +22,6 @@ public class ValidOutputDataProcessor extends OutputDataProcessor {
         this.p = p;
     }
 
-    @Override
-    public StringBuffer getOutput() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     /**
      *
      * @param outputReader
