@@ -14,12 +14,6 @@ import java.io.BufferedReader;
 public abstract class OutputDataProcessor extends DataProcessor {
 
     /**
-     * 
-     * @return
-     */
-    public abstract StringBuffer getOutput();
-
-    /**
      *
      * @param outputReader
      * @param testOutputReader
