@@ -6,16 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
+ * Класс-хранитель типов данных загружает типы данных из таблицы-справочника
+ * в БД.
  *
  * @author partizanka
  */
 public class DataTypes extends Data {
 
     /**
+     * Возвращает строку таблицы - тип данных.
      *
      * @param rs
-     * @return
-     * @throws SQLException
+     * @return строка таблицы - {@link DataElement}, необходимо приводить к
+     * {@link DataType}
+     * @throws SQLException исключение при выполнении запроса к БД
      */
     @Override
     protected DataElement getElement(ResultSet rs) throws SQLException {

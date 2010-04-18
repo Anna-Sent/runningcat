@@ -3,6 +3,7 @@ package DataBaseContent;
 import DataBaseContent.Generic.DataElement;
 
 /**
+ * Класс "Генератор входа" (input generator).
  *
  * @author partizanka
  */
@@ -12,10 +13,12 @@ public class IGenerator extends DataElement {
     private String source;
 
     /**
-     * 
-     * @param id
-     * @param source
-     * @param language_id
+     * Конструктор класса.
+     *
+     * @param id код генератора входа
+     * @param source исходный код программы-генератора
+     * @param language_id код языка программирования, на котором написана
+     * программа-генератор
      */
     public IGenerator(int id, String source, int language_id) {
         this.id = id;

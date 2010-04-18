@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
+ * Класс "Задача по программированию".
  *
  * @author partizanka
  */
@@ -23,28 +24,30 @@ public class Problem extends DataElement {
     private ArrayList<Integer> igenerators = null;
     private HashMap<Integer, Integer> ioparams = null;
     /**
-     *
+     * Количество тестов.
      */
     public int n = 0;
     /**
-     *
+     * Массив строк - названия файлов со входными данными.
      */
+    public String[] in = null;
     /**
-     *
+     * Массив строк - названия файлов с выходными данными.
      */
-    public String[] in = null, out = null;
+    public String[] out = null;
 
     /**
+     * Конструктор класса.
      *
-     * @param id
-     * @param description
-     * @param restrictions
-     * @param samples
-     * @param name
-     * @param testsdir
-     * @param solutions
-     * @param igenerators
-     * @param ioparams
+     * @param id код задачи
+     * @param description постановка задачи
+     * @param restrictions ограничения
+     * @param samples примеры
+     * @param name имя задачи
+     * @param testsdir название директории с тестами
+     * @param solutions массив кодов эталонных решений
+     * @param igenerators массив кодов генераторов входа
+     * @param ioparams коды входных/выходных параметров
      */
     public Problem(int id, String description, String restrictions, String samples,
             String name, String testsdir,
@@ -64,10 +67,11 @@ public class Problem extends DataElement {
     }
 
     /**
-     * 
+     * Возвращает путь к директории с тестами.
+     *
      * @return
      */
-    public String getAbsPathToTests() {
+    public String getPathToTests() {
         return Configuration.getTestsDir() + "/" + this.testsdir;
     }
 
