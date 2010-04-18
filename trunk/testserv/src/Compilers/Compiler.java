@@ -36,13 +36,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
+ * Класс "Компилятор" запускает процесс компиляции.
  *
  * @author partizanka
  */
 public class Compiler {
 
     /**
-     *
+     * <code>message</code> - вывод компилятора.
+     * <code>TIME_LIMIT</code> - ограничение работы компилятора по времени
+     * <code>lang</code> - код языка программирования компилятора
      */
     protected StringBuffer message;
     private long TIME_LIMIT = 30000;
@@ -73,7 +76,7 @@ public class Compiler {
     }
 
     /**
-     * Метод запускает процесс компиляции программы program.
+     * Запускает процесс компиляции программы program.
      * Программа должна быть не null.
      * Перед вызовом этого метода должен быть вызван метод Program.prepare().
      * Вывод компилятора - стандартный или вывод ошибок (соответствующие

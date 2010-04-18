@@ -31,7 +31,7 @@ public class OutputFromFileGenerator extends OutputGenerator {
     public Reader getReader(int testNumber) throws OutputGeneratingException {
         Reader reader = null;
         try {
-            reader = new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.out[testNumber]);
+            reader = new FileReader(program.problem.getPathToTests() + "/" + program.problem.out[testNumber]);
         } catch (FileNotFoundException e) {
             throw new OutputGeneratingException("Test output not found: " + e);
         }

@@ -31,7 +31,7 @@ public class InputFromFileGenerator extends InputGenerator {
     public Reader getReader(int testNumber) throws InputGeneratingException {
         Reader reader = null;
         try {
-            reader = new FileReader(program.problem.getAbsPathToTests() + "/" + program.problem.in[testNumber]);
+            reader = new FileReader(program.problem.getPathToTests() + "/" + program.problem.in[testNumber]);
         } catch (FileNotFoundException e) {
             throw new InputGeneratingException("Test input not found: " + e);
         }
