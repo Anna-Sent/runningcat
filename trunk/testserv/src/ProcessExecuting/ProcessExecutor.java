@@ -170,6 +170,7 @@ public class ProcessExecutor {
 
     /**
      * 
+     * @return
      */
     public boolean quietStop() {
         try {
