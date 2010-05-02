@@ -8,6 +8,10 @@ import ProgramTesting.Exceptions.TestingInternalServerErrorException;
  */
 public class TestReadException extends TestingInternalServerErrorException {
 
+    /**
+     * 
+     * @param msg
+     */
     public TestReadException(String msg) {
         super(msg);
     }
