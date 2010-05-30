@@ -62,13 +62,6 @@ CREATE TABLE `mdl_problemstatement_problem_input_generator` (
   PRIMARY KEY  (`problem_id`,`input_generator_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `mdl_problemstatement_problem_input_output` (
-  `problem_id` int(10) unsigned NOT NULL,
-  `n` int(10) unsigned NOT NULL,
-  `data_type_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`problem_id`,`n`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `mdl_problemstatement_problem_input_output_params` (
   `problem_id` int(10) unsigned NOT NULL,
   `n` int(10) unsigned NOT NULL,
