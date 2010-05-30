@@ -28,9 +28,9 @@ $string['allowmaxfiles'] = 'Maximum number of uploaded files';
 $string['allownotes'] = 'Allow notes';
 $string['allowresubmit'] = 'Allow resubmitting';
 $string['alreadygraded'] = 'Your assignment has already been graded and resubmission is not allowed.';
-$string['assignment:grade'] = 'Grade assignment';
-$string['assignment:submit'] = 'Submit assignment';
-$string['assignment:view'] = 'View assignment';
+$string['assignment:grade'] = 'Grade problemstatement';
+$string['assignment:submit'] = 'Submit problemstatement';
+$string['assignment:view'] = 'View problemstatement';
 $string['assignmentdetails'] = 'Assignment details';
 $string['assignmentmail'] = '$a->teacher has posted some feedback on your
 assignment submission for \'$a->assignment\'
